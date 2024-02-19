@@ -1,0 +1,133 @@
+/*** Root Variables */
+:root {
+  /* Background */
+  --background-left: #0D2838;
+  --background-right: #0E122F;
+
+  /* Foreground */
+  --dark-30-white: #FFFFFF;
+  --dark-30: #EAF6FFF2;
+  --dark-faded-30: #B6CEDCE6;
+  --dark-inactive-30: #A0A5B6E6;
+  --dark-10: #FF9900;
+}
+
+/*** Universal styles */
+* {
+  box-sizing: border-box;
+  color: var(--dark-30);
+}
+
+html {
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+
+}
+
+/*** Background Styles */
+.body {
+  background: linear-gradient(-75deg, var(--background-left), var(--background-right));
+  box-shadow: inset 0 0 3rem rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 1920px;
+  min-height: 100vh;
+  padding: 6rem 1.5rem;
+}
+
+/*** West Box */
+.header {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  width: 33rem;
+}
+
+.hero__title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 0.6em;
+}
+
+.hero__message {
+  color: var(--dark-faded-30);
+  line-height: 1.5em;
+  margin-top: 1em;
+  width: 75%;
+}
+
+.nav {
+  margin-top: 2em;
+}
+
+.nav__item {
+  font-size: 0.75rem;
+}
+
+.nav__link {
+  align-items: center;
+  display: inline-flex;
+  padding: 1em 1em 1em 0;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.nav__link:target .nav__text {
+  color: var(--dark-10) !important;
+  background-color: red;
+}
+
+.nav__link:hover .nav__indicator {
+  width: 4em;
+  transition: width 0.2s;
+}
+
+.nav__link .nav__indicator {
+  transition: width 0.2s;
+}
+
+.nav__link:hover .nav__text {
+  color: var(--dark-30);
+  font-weight: 700;
+}
+
+.nav__indicator {
+  background: var(--dark-30);
+  height: 1px;
+  margin-right: 0.5em;
+  width: 2em;
+}
+
+.nav__text {
+  color: var(--dark-inactive-30);
+}
+
+.socials__list {
+  display: flex;
+  gap: 1.25em;
+  margin-top: 2em;
+}
+
+.socials__link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.socials__svg:hover > .socials__path {
+  fill: var(--dark-30); /*! Change the color here */
+}
+
+/*** East Box */
+.main {
+  border: .15px solid rgba(255, 255, 255, 0.2); /* TODO: Remove this upon deployment */
+  width: 33rem;
+}
