@@ -7,10 +7,10 @@
   /* Foreground */
   --dark-30-white: #FFFFFF;
   --dark-30: #EAF6FFF2;
-  --dark-faded-30: #B6CEDCE6;
+  --dark-faded-30: #94A3B8;
   --dark-inactive-30: #A0A5B6E6;
   --dark-10: #ff8b00;
-  --dark-faded-10: #ffc267;
+  --dark-faded-10: #ff8b00;
   --dark-transparent-10: #ff8c0052;
   --dark-10-select: #472e00;
 
@@ -18,6 +18,9 @@
   --h1-font-size: 3rem;
   --h1-font-weight: 700;
   --h1-font-family: Figtree, Helvetica, sans-serif;
+  --subtitle-font-size: 1.25rem;
+  --subtitle-font-weight: 600;
+  --subtitle-font-family: Figtree, Helvetica, sans-serif;
 
   /* H2 */
   --h2-font-size: 1.5rem;
@@ -38,6 +41,14 @@
   --paragraph-font-family: Inter, Figtree, Helvetica, sans-serif;
   --paragraph-label-font-size: 0.75rem;
   --paragraph-label-font-weight: 400;
+}
+
+@media only screen and (max-width: 640px){
+  :root {
+    --h1-font-size: 2.25rem;
+    --subtitle-font-size: 1.125rem;
+    --h2-font-size: 1.25rem;
+  }
 }
 
 ::selection {
@@ -71,7 +82,22 @@ html {
   margin: 0 auto;
   max-width: 1920px;
   min-height: 100vh;
-  padding: 0 1.5rem;
+  padding: 0 3rem;
+}
+
+/* TODO: Revisit after sizing is corrected for descendants */
+@media only screen and (max-width: 1000px) {
+  .container {
+    flex-direction: column;
+    padding: 5em 3em 0;
+    margin: 0;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    padding: 3em 1.5em 0;
+  }
 }
 
 /*** West Box */
@@ -86,6 +112,13 @@ html {
   padding-bottom: 6rem;
 }
 
+@media only screen and (max-width: 1000px) {
+  .header {
+    padding: 0;
+    position: relative;
+  }
+}
+
 .hero__title {
   font-family: var(--h1-font-family);
   font-size: var(--h1-font-size);
@@ -93,9 +126,9 @@ html {
 }
 
 .hero__subtitle {
-  font-family: Figtree, Helvetica, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-family: var(--subtitle-font-family);
+  font-size: var(--subtitle-font-size);
+  font-weight: var(--subtitle-font-weight);
   margin-top: 0.6em;
 }
 
@@ -109,6 +142,12 @@ html {
 
 .nav {
   margin-top: 2em;
+}
+
+@media only screen and (max-width: 1000px) {
+  .nav {
+    display: none;
+  }
 }
 
 .nav__item {
@@ -172,8 +211,14 @@ html {
 
 /*** East Box */
 .main {
-  width: 35rem;
+  max-width: 35rem;
   padding-bottom: 6rem;
+}
+
+@media only screen and (max-width: 1000px) {
+  .main {
+    max-width: 100%;
+  }
 }
 
 .section--column {
@@ -185,12 +230,24 @@ html {
   margin-top: 8em;
 }
 
+@media only screen and (max-width: 1000px) {
+  .section + .section {
+    margin-top: 4em;
+  }
+}
+
 .section__heading {
   font-family: var(--h2-font-family);
   font-size: var(--h2-font-size);
   font-weight: var(--h2-font-weight);
   padding: 6rem 0 0 0;
   margin-bottom: 1em;
+}
+
+@media only screen and (max-width: 1000px) {
+  .section__heading {
+    padding: 4em 0 0 0;
+  }
 }
 
 .section__description {
@@ -227,12 +284,28 @@ html {
   position: relative;
 }
 
+.section__item-link {
+  text-decoration: none;
+}
+
 .section__item {
   cursor: pointer;
   display: flex;
   gap: 2em;
   padding: 1.5em 0;
   position: relative;
+}
+
+@media only screen and (max-width: 640px) {
+  .section__item {
+    flex-direction: column;
+    gap: 1em;
+    padding: 1.5em 0;
+  }
+
+  .section__item--reverse {
+    flex-direction: column-reverse;
+  }
 }
 
 .section__item--cursor-default {
@@ -261,12 +334,26 @@ html {
   width: 2.5em;
 }
 
+.section__item-icon {
+  filter: grayscale(100%) brightness(150%) saturate(20%);
+  transition: filter 0.2s;
+}
+
+.section__item:hover .section__item-icon {
+  filter: grayscale(0%) brightness(100%) saturate(100%);
+  transition: filter 0.2s;
+}
+
 .section__item-date-container {
   width: 8em;
 }
 
 .section__item-thumbnail-container {
   width: 10em;
+}
+
+.section__item-thumbnail {
+  width: 100%;
 }
 
 .section__item-content {
@@ -291,6 +378,16 @@ html {
   transition: color 0.25s;
 }
 
+.section__item-more-items-link {
+  margin: 2em 0;
+  text-decoration: none;
+}
+
+.section__item-more-items-link:hover {
+  color: var(--dark-faded-10);
+  transition: color 0.25s;
+}
+
 .section__link-arrow {
   height: 1.25em;
   position: relative;
@@ -298,6 +395,7 @@ html {
   transition: transform 0.1s;
 }
 
+.section__item-more-items-link:hover .section__link-arrow,
 .section__item:hover .section__link-arrow {
   top: 0;
   left: .25em;
@@ -310,6 +408,7 @@ html {
   transition: fill 0.25s;
 }
 
+.section__item-more-items-link:hover .section__link-arrow-path,
 .section__item:hover .section__link-arrow-path {
   fill: var(--dark-faded-10);
   transition: fill 0.25s;
@@ -318,7 +417,6 @@ html {
 .section__item-thumbnail-container {
   align-items: center;
   border-radius: 0.25em;
-  border: 1px solid var(--dark-faded-30);
   display: flex;
   height: 5.25em;
   justify-content: center;
@@ -337,9 +435,6 @@ html {
 .section__item-date-to {
   color: var(--dark-inactive-30);
 }
-
-
-
 
 
 
@@ -396,27 +491,54 @@ html {
   resize: none;
 }
 
-.action {
+.section__form-buttons {
   margin-top: 2rem;
+  align-items: center;
+  display: inline-grid;
+  gap: 1.5em;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media only screen and (max-width: 410px){
+  .section__form-buttons {
+    gap: 1em;
+    grid-template-columns: 1fr;
+  }
 }
 
 .action__button {
-  font: inherit;
-  font-size: var(--paragraph-font-size);
-  padding: 1em 3em;
-  font-weight: 500;
   background-color: var(--dark-transparent-10);
   border-radius: 6px;
-  color: var(--dark-10);
   border: 0;
-  transition: background-color 0.2s;
+  box-sizing: border-box;
+  color: var(--dark-10);
+  font-size: var(--paragraph-font-size);
+  font-weight: 500;
+  height: 3.25em;
+  line-height: 1em;
+  padding: 1em 3em;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+@media only screen and (max-width: 465px){
+  .action__button {
+    font-size: .75rem;
+  }
+}
+
+@media only screen and (max-width: 410px){
+  .action__button {
+    min-width: 15em;
+    width: 100%;
+  }
 }
 
 .action__button:hover {
   background-color: var(--dark-10);
   color: black;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .action__button:focus {
@@ -438,5 +560,14 @@ html {
   color: var(--dark-weak-30);
   font-size: var(--paragraph-label-font-size);
   font-weight: var(--paragraph-label-font-weight);
+  line-height: 1.5em;
   margin-top: 3em;
+  width: 70%;
+}
+
+@media only screen and (max-width: 1000px) {
+  .footer__text {
+    text-align: center;
+    width: 100%;
+  }
 }
