@@ -85,7 +85,6 @@ html {
   padding: 0 3rem;
 }
 
-/* TODO: Revisit after sizing is corrected for descendants */
 @media only screen and (max-width: 1000px) {
   .container {
     flex-direction: column;
