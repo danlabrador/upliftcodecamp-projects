@@ -492,7 +492,7 @@ html {
 
 .section__form-buttons {
   margin-top: 2rem;
-  align-items: center;
+  align-items: end;
   display: inline-grid;
   gap: 1.5em;
   grid-template-columns: 1fr 1fr;
@@ -506,14 +506,17 @@ html {
 }
 
 .action__button {
+  align-items: center;
   background-color: var(--dark-transparent-10);
   border-radius: 6px;
   border: 0;
   box-sizing: border-box;
   color: var(--dark-10);
+  display: inline-flex;
   font-size: var(--paragraph-font-size);
   font-weight: 500;
   height: 3.25em;
+  justify-content: center;
   line-height: 1em;
   padding: 1em 3em;
   text-decoration: none;
@@ -526,7 +529,7 @@ html {
   }
 }
 
-@media only screen and (max-width: 410px){
+@media only screen and (max-width: 420px){
   .action__button {
     min-width: 15em;
     width: 100%;
