@@ -26,8 +26,8 @@
  *   @returns {Object} - Playlist object
  */
 
-import { SPOTIFY_CLIENT_ID } from './apiKeys.js';
 import RetryUtil from './RetryUtil.js';
+const SPOTIFY_CLIENT_ID = 'c9bcd3ce9d3245cfbaa0a14c7d8e8ff0';
 
 class SpotifyAPI {
   constructor() {
