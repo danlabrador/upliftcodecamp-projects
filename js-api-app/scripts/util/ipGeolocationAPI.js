@@ -34,7 +34,7 @@ const getLocation = async () => {
     'US Virgin Islands',
   ]
 
-  for (let idx = 0; idx < countriesWithPrefixThe.length; ++idx){
+  for (let idx = 0; idx < countriesWithPrefixThe.length; ++idx) {
     if (countriesWithPrefixThe[idx] === rawCountry)
       parsedCountry = 'the ' + rawCountry;
   }
