@@ -11,7 +11,7 @@
  * 
  * @method searchTracks - Searches for tracks on Spotify
  *   @param {string} term - Search term
- *   @returns {Array} - Array of track objects
+ *   @returns {Array[Object]} - Array of track objects
  * 
  * @method getUser - Retrieves the user's Spotify profile
  *   @returns {Object} - User object
@@ -22,7 +22,7 @@
  * 
  * @method addTracksToPlaylist - Saves a playlist to the user's Spotify account
  *   @param {Object} playlist - Playlist object
- *   @param {Array} uriArr - Array of track URIs
+ *   @param {Array[Object]} uriArr - Array of track URIs
  *   @returns {Object} - Playlist object
  */
 
