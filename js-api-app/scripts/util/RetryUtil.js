@@ -28,17 +28,5 @@ class RetryUtil {
     }
   }
 }
-const retryAfterError = async (retries, fn, delay = 500) => {
-  try {
-    return await fn();
-  } catch (error) {
-    if (retries > 1) {
-      await new Promise(res => setTimeout(res, delay));
-      return this.retryAfterError(retries - 1, fn, delay * 2);
-    } else {
-      throw error;
-    }
-  }
-}
 
 export default RetryUtil;

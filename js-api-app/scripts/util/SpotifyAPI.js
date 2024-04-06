@@ -10,8 +10,10 @@
  *   @returns {string} - Spotify access token
  * 
  * @method searchTracks - Searches for tracks on Spotify
+ *   @docs https://developer.spotify.com/documentation/web-api/reference/search
  *   @param {string} term - Search term
- *   @returns {Array[Object]} - Array of track objects
+ *   @param {number} [limit=20] - Number of search results to limit (default: 20)
+ *   @returns {Array<Object>} - Array of track objects
  * 
  * @method getUser - Retrieves the user's Spotify profile
  *   @returns {Object} - User object
@@ -22,7 +24,7 @@
  * 
  * @method addTracksToPlaylist - Saves a playlist to the user's Spotify account
  *   @param {Object} playlist - Playlist object
- *   @param {Array[Object]} uriArr - Array of track URIs
+ *   @param {Array<string>} uriArr - Array of track URIs
  *   @returns {Object} - Playlist object
  */
 
@@ -67,9 +69,9 @@ class SpotifyAPI {
     }
   }
 
-  async searchTracks(term) {
+  async searchTracks(term, limit = 20) {
     const headers = { Authorization: `Bearer ${this.getAccessToken()}` };
-    const response = await fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, { headers });
+    const response = await fetch(`https://api.spotify.com/v1/search?type=track&q=${term}&limit=${limit}`, { headers });
 
     const isRateLimited =
       response.status === RetryUtil.TOO_MANY_REQUESTS ||
@@ -91,10 +93,16 @@ class SpotifyAPI {
 
     const searchResults = await unmappedSearchResults.map(track => {
       return {
+        album: {
+          name: track.album.name,
+          art: track.album.images[1].url,
+          external_url: track.album.external_urls.spotify
+        },
+        artist: track.artists[0].name,
         id: track.id,
         name: track.name,
-        artist: track.artists[0].name,
-        album: track.album.name,
+        preview_url: track.preview_url,
+        spotify_url: track.external_urls.spotify,
         uri: track.uri,
       }
     })
