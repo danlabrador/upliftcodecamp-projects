@@ -1,6 +1,7 @@
 **/apiKeys.js
-**/.env
+**/.env*
 node_modules/
 .parcel-cache/
 .cache/
 dist/
+sandbox*
