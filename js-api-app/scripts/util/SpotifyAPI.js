@@ -30,7 +30,6 @@
 
 import RetryUtil from './RetryUtil.js';
 import Track from '../Track.js';
-const SPOTIFY_CLIENT_ID = 'c9bcd3ce9d3245cfbaa0a14c7d8e8ff0';
 
 class SpotifyAPI {
   constructor() {
@@ -66,7 +65,7 @@ class SpotifyAPI {
       const scopesURLParam = scopes.join(spaceDelimiter);
 
       // Redirect the user to the Spotify login page
-      window.location = `${spotifyAuthorizeEndpoint}?client_id=${SPOTIFY_CLIENT_ID}&redirect_uri=${redirectURLAfterLogin}&scope=${scopesURLParam}&response_type=token&show_dialogue=true`;
+      window.location = `${spotifyAuthorizeEndpoint}?client_id=${process.env.AURORA_BEATS_SPOTIFY_CLIENT_ID}&redirect_uri=${redirectURLAfterLogin}&scope=${scopesURLParam}&response_type=token&show_dialogue=true`;
     }
   }
 
