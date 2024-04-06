@@ -1,7 +1,5 @@
-import { IP_GEOLOCATION_KEY } from './apiKeys.js';
-
 const getLocation = async () => {
-  const response = await fetch('https://ipgeolocation.abstractapi.com/v1/?api_key=' + IP_GEOLOCATION_KEY);
+  const response = await fetch('https://ipgeolocation.abstractapi.com/v1/?api_key=' + process.env.AURORA_BEATS_IP_GEOLOCATION_KEY);
 
   if (!response.ok) throw new Error('Location request failed.');
 
