@@ -19,9 +19,11 @@ const main = async () => {
   playlistManager.addToStaging(secondTrack);
   reviewPlaylists(playlistManager);
 
-  const playlistName = 'TestData';
-  const playlist = await playlistManager.savePlaylist(playlistName);
-  console.log(playlist);
+  // const playlistName = 'TestData';
+  // const playlist = await playlistManager.savePlaylist(playlistName);
+  // console.log(playlist);
+  // console.log('Playlist Saved');
+  // reviewPlaylists(playlistManager);
 }
 
 function reviewPlaylists(playlistManager) {
@@ -39,5 +41,5 @@ async function test() {
   console.log(searchResults[0]);
 }
 
-// main();
+main();
 // test();

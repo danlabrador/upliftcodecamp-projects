@@ -29,6 +29,7 @@
  */
 
 import RetryUtil from './RetryUtil.js';
+import Track from '../Track.js';
 const SPOTIFY_CLIENT_ID = 'c9bcd3ce9d3245cfbaa0a14c7d8e8ff0';
 
 class SpotifyAPI {
@@ -92,19 +93,9 @@ class SpotifyAPI {
     const unmappedSearchResults = await json.tracks.items;
 
     const searchResults = await unmappedSearchResults.map(track => {
-      return {
-        album: {
-          name: track.album.name,
-          art: track.album.images[1].url,
-          external_url: track.album.external_urls.spotify
-        },
-        artist: track.artists[0].name,
-        id: track.id,
-        name: track.name,
-        preview_url: track.preview_url,
-        spotify_url: track.external_urls.spotify,
-        uri: track.uri,
-      }
+      const newTrack = new Track();
+      newTrack.useSpotifyData(track);
+      return newTrack;
     })
 
     return searchResults;

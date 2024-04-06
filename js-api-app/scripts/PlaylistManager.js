@@ -63,8 +63,11 @@ class PlaylistManager {
 
   async savePlaylist(name) {
     const playlist = await this._spotify.createPlaylist(name);
-    const uriArr = this._stagingPlaylist.map(track => track.uri);
-    return this._spotify.addTracksToPlaylist(playlist, uriArr);
+    const uriArr = this._stagingPlaylist.map(track => track.spotify_uri);
+    const snapshot = await this._spotify.addTracksToPlaylist(playlist, uriArr);
+    playlist.snapshot_id = snapshot.snapshot_id;
+    this._stagingPlaylist = [];
+    return playlist;
   }
 }
 

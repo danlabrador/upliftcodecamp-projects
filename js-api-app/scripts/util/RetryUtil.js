@@ -10,7 +10,7 @@
  * @property {number} TOO_MANY_REQUESTS - HTTP status code for too many requests
  * @property {number} SERVICE_UNAVAILABLE - HTTP status code for service unavailable
  */
-  
+
 class RetryUtil {
   static TOO_MANY_REQUESTS = 429;
   static SERVICE_UNAVAILABLE = 503;
