@@ -33,10 +33,14 @@ class Track {
     this.source = null;
   }
 
-  useSpotifyData(track){
+  useSpotifyData(track) {
     this.album = {
       name: track.album.name,
-      art: track.album.images[1].url,
+      // Use the 300x300 image for the album art, otherwise use the first image
+      art: track.album.images
+        .filter(image => image.height === 300).length > 0 ?
+        track.album.images.filter(image => image.height === 300)[0].url :
+        track.album.images[0].url,
       external_url: track.album.external_urls.spotify
     };
     this.artist = track.artists[0].name;
@@ -47,7 +51,7 @@ class Track {
     this.spotify_uri = track.uri;
     this.source = 'spotify';
   }
-  
+
   toString() {
     return `${this.name} by ${this.artist}`;
   }

@@ -107,8 +107,6 @@ class SpotifyAPI {
 
     const response = await fetch(`${endpoint}&seed_tracks=${seedTracks}`, { headers });
 
-    console.log('Adding Spotify recommendations to list based on first 5 tracks.')
-
     const isRateLimited =
       response.status === RetryUtil.TOO_MANY_REQUESTS ||
       response.status === RetryUtil.SERVICE_UNAVAILABLE;
@@ -132,6 +130,66 @@ class SpotifyAPI {
     });
 
     return recommendations;
+  }
+
+  async getNewReleases(limit = 20) {
+    const endpoint = `https://api.spotify.com/v1/browse/new-releases?limit=${limit}`;
+    const headers = { Authorization: `Bearer ${this.getAccessToken()}` };
+    const response = await fetch(endpoint, { headers });
+
+    const isRateLimited =
+      response.status === RetryUtil.TOO_MANY_REQUESTS ||
+      response.status === RetryUtil.SERVICE_UNAVAILABLE;
+
+    if (isRateLimited) {
+      const retryAfter = response.headers.get('Retry-After');
+      if (retryAfter) {
+        const delay = parseInt(retryAfter) * 1000;
+        return RetryUtil.retryAfterError(3, this.getNewGlobalReleases(), delay);
+      }
+    }
+
+    const json = await response.json();
+
+    return json.albums.items;
+  }
+
+  async getTracksFromAlbum(album, limit = 1) {
+    if (!album) return;
+
+    const endpoint = `https://api.spotify.com/v1/albums/${album.id}/tracks?limit=${limit}`;
+    const headers = { Authorization: `Bearer ${this.getAccessToken()}` };
+    const response = await fetch(endpoint, { headers });
+
+    const isRateLimited =
+      response.status === RetryUtil.TOO_MANY_REQUESTS ||
+      response.status === RetryUtil.SERVICE_UNAVAILABLE;
+
+    if (isRateLimited) {
+      const retryAfter = response.headers.get('Retry-After');
+      if (retryAfter) {
+        const delay = parseInt(retryAfter) * 1000;
+        return RetryUtil.retryAfterError(3, this.getTracksFromAlbum(album, limit), delay);
+      }
+    }
+
+    const json = await response.json();
+    const tracks = json.items;
+
+    if (limit === 1) {
+      const track = tracks[0];
+      track.album = album;
+      const newTrack = new Track();
+      newTrack.useSpotifyData(json.items[0]);
+      return newTrack;
+    } else {
+      return json.items.map(track => {
+        track.album = album;
+        const newTrack = new Track();
+        newTrack.useSpotifyData(track);
+        return newTrack;
+      });
+    }
   }
 
   async getUser() {

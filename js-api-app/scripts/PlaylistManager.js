@@ -24,7 +24,6 @@
  */
 
 import OpenAI from './util/OpenAIAPI.js';
-import RetryUtil from './util/RetryUtil.js';
 
 class PlaylistManager {
   constructor(spotify) {
@@ -81,7 +80,7 @@ class PlaylistManager {
 
       this._trackSuggestions = await Promise.all(trackPromises);
 
-      // If the number of recommendations is less than 20, search for additional tracks using Spotify's search endpoint
+      // If the number of recommendations is less than 20, search for additional tracks using Spotify's recommendation endpoint
       const recommendationsLength = recommendations.length;
       if (recommendationsLength < 20) {
         const remainingTracks = 20 - recommendationsLength;
@@ -98,6 +97,18 @@ class PlaylistManager {
       console.error('Error getting recommendations from OpenAI. Using search term to search for tracks. Error: ' + error);
       return results;
     }
+  }
+
+  async recommendNewTracks(spotify, limit = 20) {
+    const album = await spotify.getNewReleases();
+
+    const newReleases = album.slice(0, limit).map(async (album) => {
+      const track = await spotify.getTracksFromAlbum(album, 1); // Limit to 1 track per album
+      return track;
+    });
+
+    this._trackSuggestions = await Promise.all(newReleases);
+    return this._trackSuggestions;
   }
 
   clearSuggestions() {
