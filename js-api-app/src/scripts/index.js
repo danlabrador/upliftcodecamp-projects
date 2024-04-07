@@ -6,14 +6,9 @@ const manager = new PlaylistManager(spotify);
 
 const main = async () => {
   // Initialize Application
-  await manager.init()
-
-  // Search
-  await manager.searchTracks('Christian Modern Songs')
-  // await manager.addTracksToStaging();
-  console.log(manager.trackSuggestions.slice(0, 1))
-  consoleTest(manager);
-  manager.renderSuggestions();
+  await manager.init();
+  const tracks = await manager.recommendNewTracks(spotify);
+  console.log(tracks[0])
 }
 
 main();

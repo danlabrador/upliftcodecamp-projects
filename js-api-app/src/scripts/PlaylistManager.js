@@ -34,15 +34,92 @@
  */
 
 import App from './App.js';
-
 import OpenAI from './util/OpenAIAPI.js';
-import '../img/icon-add.svg';
+import playIconSrc from '../img/icon-play.svg';
+import pauseIconSrc from '../img/icon-pause.svg';
+import addIconSrc from '../img/icon-add.svg';
+import artHoverOverlaySrc from '../img/art-hover-overlay.png';
 
 class PlaylistManager extends App {
-  super(spotify) {
+  constructor(spotify) {
+    super(spotify);
     this._trackSuggestions = [];
     this._stagingPlaylist = [];
     this._spotify = spotify;
+    this._newReleasesBtnState = true;
+    this._auroraAIState = false;
+    this.addEventListeners();
+  }
+
+  addEventListeners() {
+    // See results
+    document.getElementById('browse-btn').addEventListener('click', async () => {
+      this.renderTracks(this._stagingPlaylist);
+    });
+
+    // See collection
+    document.getElementById('collection-btn').addEventListener('click', async () => {
+      this.renderTracks(this._stagingPlaylist);
+    });
+
+    // Recommend New Tracks
+    (async () => {
+      document.getElementById('new-releases-btn').classList.remove('filter', 'grayscale', 'brightness-1000');
+      document.getElementById('new-releases-btn-container').classList.add('bg-pink-200');
+      this._newReleasesBtnState = true;
+      const newTracks = await this.recommendNewTracks(this._spotify);
+      this.renderTracks(newTracks);
+    })();
+
+    document.getElementById('new-releases-btn-container').addEventListener('click', async () => {
+      if (!this._newReleasesBtnState) {
+        document.getElementById('new-releases-btn').classList.remove('filter', 'grayscale', 'brightness-1000');
+        document.getElementById('new-releases-btn-container').classList.add('bg-pink-200');
+        this._newReleasesBtnState = true;
+        const newTracks = await this.recommendNewTracks(this._spotify);
+        this.renderTracks(newTracks);
+      } else {
+        document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-1000');
+        document.getElementById('new-releases-btn-container').classList.remove('bg-pink-200');
+        this._newReleasesBtnState = false;
+        this._trackSuggestions = [];
+        this.renderTracks(this._trackSuggestions);
+      }
+    });
+
+    // Search for tracks on return key
+    document.getElementById('search-input').addEventListener('keydown', async (event) => {
+      if (event.key === 'Enter' && this._auroraAIState === false) {
+        const term = event.target.value;
+        event.target.value = '';
+        event.target.blur();
+        const results = await this.searchTracks(term);
+        this.renderTracks(results);
+      } else if (event.key === 'Enter' && this._auroraAIState === true) {
+        const prompt = event.target.value;
+        event.target.value = '';
+        event.target.blur();
+        const results = await this.recommendTracks(prompt, this._user.id);
+        this.renderTracks(results);
+      }
+    });
+
+    // Enable AuroraAI
+    document.getElementById('ai-btn').addEventListener('click', async () => {
+      if (!this._auroraAIState) {
+        document.getElementById('ai-btn').classList.add('bg-pink-200');
+        document.getElementById('ai-icon').classList.remove('filter', 'grayscale', 'brightness-200');
+        document.getElementById('search-input').placeholder = 'Ask AuroraAI for recommendations';
+        this._auroraAIState = true;
+      } else {
+        document.getElementById('ai-btn').classList.remove('bg-pink-200');
+        document.getElementById('ai-icon').classList.add('filter', 'grayscale', 'brightness-200');
+        document.getElementById('search-input').placeholder = 'Search for songs, artists, or albums';
+        this._auroraAIState = false;
+      }
+    });
+
+
   }
 
   get trackSuggestions() {
@@ -155,51 +232,92 @@ class PlaylistManager extends App {
     return playlist;
   }
 
-  async renderSuggestions() {
+  async renderTracks(list) {
     // Render the track suggestions
     const tracksContainer = document.getElementById('tracks');
     tracksContainer.innerHTML = '';
 
-    this._trackSuggestions.forEach((track, index) => {
+    list.forEach((track, index) => {
       const trackElement = document.createElement('div');
       trackElement.classList.add('track');
       trackElement.setAttribute('data-index', index);
 
       // Create the featured track section
       const featuredTrackSection = document.createElement('section');
-      featuredTrackSection.classList.add('track-container', 'track-container--highlight', 'bg-pink-600', 'py-2', 'px-3', 'mx-4', 'rounded-lg', 'flex', 'items-center', 'text-white');
+      featuredTrackSection.classList.add('track-container', 'py-2', 'px-3', 'mx-4', 'rounded-lg', 'flex', 'items-center', 'text-white');
+      track.featured && featuredTrackSection.classList.add('track-container--highlight', 'bg-pink-600');
+
+      if (index === 0 && !track.featured) {
+        featuredTrackSection.classList.remove('py-2');
+        featuredTrackSection.classList.add('pb-2');
+      }
+
+      // Create the album art container
+      const albumArtContainer = document.createElement('div');
+      albumArtContainer.classList.add('rounded-lg');
+      albumArtContainer.style.backgroundImage = `url(${track.album.art})`;
+      albumArtContainer.style.backgroundSize = 'cover';
+      albumArtContainer.style.backgroundPosition = 'center';
+      albumArtContainer.style.width = '56px';
+      albumArtContainer.style.height = '56px';
+      albumArtContainer.style.overflow = 'hidden';
+      albumArtContainer.style.position = 'relative';
+
+      // Create the album art anchor tag
+      const albumArtLink = document.createElement('a');
+      albumArtLink.href = track.spotify_url;
+      albumArtLink.target = '_blank';
 
       // Create the album art image
       const albumArtImage = document.createElement('img');
-      albumArtImage.classList.add('rounded-lg');
-      albumArtImage.src = track.album.art;
+      albumArtImage.src = artHoverOverlaySrc;
       albumArtImage.alt = 'album art';
-      albumArtImage.width = 56;
-      albumArtImage.height = 56;
-      featuredTrackSection.appendChild(albumArtImage);
+      albumArtImage.style.width = '100%';
+      albumArtImage.style.height = '100%';
+      albumArtImage.style.objectFit = 'cover';
+      albumArtImage.style.position = 'absolute';
+      albumArtImage.style.top = '0';
+      albumArtImage.style.left = '0';
+      albumArtImage.style.opacity = '0';
+      albumArtImage.style.transition = 'opacity 0.3s';
+
+      albumArtLink.appendChild(albumArtImage);
+      albumArtContainer.appendChild(albumArtLink);
+      featuredTrackSection.appendChild(albumArtContainer);
+
+      albumArtContainer.addEventListener('mouseenter', () => {
+        albumArtImage.style.opacity = '1';
+      });
+
+      albumArtContainer.addEventListener('mouseleave', () => {
+        albumArtImage.style.opacity = '0';
+      });
 
       // Create the track details container
       const trackDetailsContainer = document.createElement('div');
       trackDetailsContainer.classList.add('track-details', 'flex', 'flex-col', 'ml-3');
+      trackDetailsContainer.style.width = 'calc(100% - 140px)';
 
       // Create the track title element
       const trackTitleElement = document.createElement('span');
       trackTitleElement.classList.add('text-sm', 'font-medium');
-      track.name.length > 40 ?
-        trackTitleElement.textContent = track.name.slice(0, 40) + '...' :
-        trackTitleElement.textContent = track.name;
+      trackTitleElement.textContent = track.name;
       trackDetailsContainer.appendChild(trackTitleElement);
 
       // Create the track artist element
       const trackArtistElement = document.createElement('span');
       trackArtistElement.classList.add('text-xs');
-      const beatsAIElement = document.createElement('span');
-      beatsAIElement.classList.add('border', 'border-white', 'px-1', 'rounded-sm', 'inline-flex', 'py-0', 'relative');
-      beatsAIElement.style.fontSize = '0.65em';
-      beatsAIElement.style.lineHeight = '1.5em';
-      beatsAIElement.style.top = '-1px';
-      beatsAIElement.textContent = 'BeatsAI';
-      trackArtistElement.appendChild(beatsAIElement);
+
+      if (track.featured) {
+        const featuredElement = document.createElement('span');
+        featuredElement.classList.add('border', 'border-white', 'px-1', 'rounded-sm', 'inline-flex', 'py-0', 'relative', 'mr-1');
+        featuredElement.style.fontSize = '0.65em';
+        featuredElement.style.lineHeight = '1.5em';
+        featuredElement.style.top = '-1px';
+        featuredElement.textContent = 'AuroraAI';
+        trackArtistElement.appendChild(featuredElement);
+      }
+
       const artistNameElement = document.createElement('span');
       artistNameElement.textContent = track.artist;
       trackArtistElement.appendChild(artistNameElement);
@@ -211,43 +329,174 @@ class PlaylistManager extends App {
       const controlsPanel = document.createElement('div');
       controlsPanel.classList.add('controls__panel', 'flex', 'items-center', 'ml-auto', 'gap-2');
 
-      // Create the add icon
-      const addIcon = document.createElement('div');
-      const addIconImage = document.createElement('img');
-      addIconImage.classList.add('controls__icon', 'controls__icon--add', 'cursor-pointer');
-      addIconImage.src = './src/img/icon-add.svg';
-      addIconImage.alt = 'next icon';
-      addIcon.appendChild(addIconImage);
-      controlsPanel.appendChild(addIcon);
-
       if (track.preview_url) {
         // Create the play/pause icons
         const playIcon = document.createElement('div');
         const playIconImage = document.createElement('img');
         playIconImage.classList.add('controls__icon--play', 'cursor-pointer');
-        playIconImage.src = './src/img/icon-play.svg';
+        playIconImage.src = playIconSrc;
         playIconImage.alt = 'play icon';
         playIcon.appendChild(playIconImage);
         const pauseIcon = document.createElement('img');
         pauseIcon.classList.add('controls__icon--pause', 'hidden', 'cursor-pointer');
-        pauseIcon.src = './src/img/icon-pause.svg';
+        pauseIcon.src = pauseIconSrc;
         pauseIcon.alt = 'pause icon';
         playIcon.appendChild(pauseIcon);
         controlsPanel.appendChild(playIcon);
+
+        playIconImage.addEventListener('click', (event) => {
+          const index = event.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-index');
+          this.setActiveTrack(this._trackSuggestions[index]);
+        })
+
       }
+
+      // Create the add icon
+      const addIcon = document.createElement('div');
+      const addIconImage = document.createElement('img');
+      addIconImage.classList.add('controls__icon', 'controls__icon--add', 'cursor-pointer');
+      addIconImage.src = addIconSrc;
+      addIconImage.alt = 'add to collection icon';
+      addIcon.appendChild(addIconImage);
+      controlsPanel.appendChild(addIcon);
 
       featuredTrackSection.appendChild(controlsPanel);
 
       trackElement.appendChild(featuredTrackSection);
 
       trackElement.getElementsByClassName('controls__icon--add')[0].addEventListener('click', (event) => {
-        const index = event.target.getAttribute('data-index');
-        this.addTrackToStaging(this._trackSuggestions[index]);
-        this.renderStaging();
+        const index = event.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-index');
+        // Check if the track is already in the staging playlist
+        const existingTrack = this._stagingPlaylist.find(item => item === this._trackSuggestions[index]);
+        if (!existingTrack) {
+          this.addTrackToStaging(this._trackSuggestions[index]);
+        }
       });
 
       tracksContainer.appendChild(trackElement);
     });
+  }
+
+  async setActiveTrack(track) {
+    const playerContainer = document.getElementById('player');
+    if (playerContainer) {
+      playerContainer.remove();
+    }
+
+    const player = document.createElement('div');
+    player.id = 'player';
+    player.classList.add('mobile__player', 'bg-indigo-900', 'text-white', 'mx-3', 'p-2', 'rounded-md', 'flex', 'items-center');
+
+    const albumArtLink = document.createElement('a');
+    albumArtLink.classList.add('rounded-md');
+    albumArtLink.href = '#';
+    albumArtLink.style.backgroundImage = `url(${track.album.art})`;
+
+    const albumArtImage = document.createElement('img');
+    albumArtImage.classList.add('h-10', 'w-10', 'opacity-0', 'hover:opacity-100', 'transition-opacity', 'duration-200', 'cursor-pointer');
+    albumArtImage.src = './src/img/art-hover-overlay.png';
+    albumArtImage.alt = '';
+
+    albumArtLink.appendChild(albumArtImage);
+    player.appendChild(albumArtLink);
+
+    const trackDetailsContainer = document.createElement('div');
+    trackDetailsContainer.classList.add('track-details', 'flex', 'flex-col', 'ml-3');
+
+    const trackTitleElement = document.createElement('span');
+    trackTitleElement.classList.add('text-sm', 'font-medium');
+    trackTitleElement.textContent = track.name;
+
+    const trackArtistElement = document.createElement('span');
+    trackArtistElement.classList.add('text-xs');
+    trackArtistElement.textContent = track.artist;
+
+    trackDetailsContainer.appendChild(trackTitleElement);
+    trackDetailsContainer.appendChild(trackArtistElement);
+    player.appendChild(trackDetailsContainer);
+
+    const controlsPanel = document.createElement('div');
+    controlsPanel.classList.add('controls__panel', 'flex', 'items-center', 'ml-auto', 'gap-2', 'mr-2');
+
+    const addIconContainer = document.createElement('div');
+    const addIcon = document.createElement('img');
+    addIcon.classList.add('controls__icon', 'controls__icon--add', 'cursor-pointer');
+    addIcon.src = addIconSrc;
+    addIcon.alt = 'next icon';
+    addIconContainer.appendChild(addIcon);
+    controlsPanel.appendChild(addIconContainer);
+
+    if (track.preview_url) {
+      const playIconContainer = document.createElement('div');
+      const playIcon = document.createElement('img');
+      playIcon.classList.add('controls__icon--play', 'cursor-pointer');
+      playIcon.src = playIconSrc;
+      playIcon.width = '14';
+      playIcon.alt = 'play icon';
+      playIconContainer.appendChild(playIcon);
+
+      const pauseIcon = document.createElement('img');
+      pauseIcon.classList.add('controls__icon--pause', 'hidden', 'cursor-pointer');
+      pauseIcon.src = pauseIconSrc;
+      pauseIcon.alt = 'pause icon';
+      playIconContainer.appendChild(pauseIcon);
+
+      controlsPanel.appendChild(playIconContainer);
+    }
+
+    player.appendChild(controlsPanel);
+
+    const bottomControls = document.getElementById('bottom-controls');
+    bottomControls.insertBefore(player, bottomControls.firstChild);
+
+    addIconContainer.addEventListener('click', () => {
+      const existingTrack = this._stagingPlaylist.find(item => item === track);
+      if (!existingTrack) {
+        this.addTrackToStaging(track);
+      }
+    });
+
+    // Add play/pause functionality here
+    if (track.preview_url) {
+      const playIcon = player.getElementsByClassName('controls__icon--play')[0];
+      const pauseIcon = player.getElementsByClassName('controls__icon--pause')[0];
+
+      let audio = new Audio(track.preview_url);
+
+      // Play immediately as the player is created
+      audio.play();
+      playIcon.classList.add('hidden');
+      pauseIcon.classList.remove('hidden');
+      audio.addEventListener('ended', () => {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      });
+
+      playIcon.addEventListener('click', () => {
+        audio.play();
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+        audio.addEventListener('ended', () => {
+          playIcon.classList.remove('hidden');
+          pauseIcon.classList.add('hidden');
+        });
+      });
+      pauseIcon.addEventListener('click', () => {
+        if (audio) {
+          audio.pause();
+          playIcon.classList.remove('hidden');
+          pauseIcon.classList.add('hidden');
+        }
+      });
+
+      player.addEventListener('DOMNodeRemoved', () => {
+        if (audio) {
+          audio.pause();
+        }
+      });
+    }
+
+    return player;
   }
 }
 

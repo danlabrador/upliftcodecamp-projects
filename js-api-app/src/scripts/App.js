@@ -28,6 +28,9 @@ class App {
     }
     document.getElementsByClassName('header__greetings-text')[0].textContent = greeting;
 
+    // Remove .hidden class when user is loaded
+    document.getElementById('app').classList.remove('hidden');
+
     return this._user;
   }
 }
