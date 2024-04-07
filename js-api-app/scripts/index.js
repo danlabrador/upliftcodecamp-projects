@@ -10,9 +10,8 @@ const main = async () => {
   let searchResults = await playlistManager.searchTracks('lofi');
   reviewPlaylists(playlistManager);
 
-  searchResults = await playlistManager.recommendTracks('I want to listen Christian worship/slow music. Suggest 35 songs.', user.id);
+  searchResults = await playlistManager.recommendTracks('Modern Christian music', user.id);
   reviewPlaylists(playlistManager);
-
 
 }
 

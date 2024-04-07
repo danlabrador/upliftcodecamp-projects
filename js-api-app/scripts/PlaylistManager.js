@@ -86,13 +86,7 @@ class PlaylistManager {
       if (recommendationsLength < 20) {
         const remainingTracks = 20 - recommendationsLength;
         console.log(`OpenAI provided ${recommendationsLength} songs. Searching for ${remainingTracks} in Spotify.`)
-
-        let supplementaryTracks;
-        for (let idx = 0; idx < remainingTracks; idx++) {
-          const searchResults = await this._spotify.searchTracks(prompt);
-          supplementaryTracks = searchResults.slice(0, remainingTracks);
-        }
-
+        const supplementaryTracks = await this._spotify.getRecommendations(this._trackSuggestions, remainingTracks);
         this._trackSuggestions = this._trackSuggestions.concat(supplementaryTracks);
       }
 

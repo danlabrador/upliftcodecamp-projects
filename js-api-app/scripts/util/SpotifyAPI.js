@@ -100,6 +100,40 @@ class SpotifyAPI {
     return searchResults;
   }
 
+  async getRecommendations(tracks, limit = 20) {
+    const endpoint = `https://api.spotify.com/v1/recommendations?limit=${limit}`;
+    const seedTracks = tracks.slice(0, 5).map(track => track.spotify_id).join(',');
+    const headers = { Authorization: `Bearer ${this.getAccessToken()}` };
+
+    const response = await fetch(`${endpoint}&seed_tracks=${seedTracks}`, { headers });
+
+    console.log('Adding Spotify recommendations to list based on first 5 tracks.')
+
+    const isRateLimited =
+      response.status === RetryUtil.TOO_MANY_REQUESTS ||
+      response.status === RetryUtil.SERVICE_UNAVAILABLE;
+
+    if (isRateLimited) {
+      const retryAfter = response.headers.get('Retry-After');
+      if (retryAfter) {
+        const delay = parseInt(retryAfter) * 1000;
+        return RetryUtil.retryAfterError(3, this.getRecommendations(tracks), delay);
+      }
+    }
+
+    const json = await response.json();
+
+    const unmappedRecommendations = await json.tracks;
+
+    const recommendations = await unmappedRecommendations.map(track => {
+      const newTrack = new Track();
+      newTrack.useSpotifyData(track);
+      return newTrack;
+    });
+
+    return recommendations;
+  }
+
   async getUser() {
     const headers = { Authorization: `Bearer ${this.getAccessToken()}` };
 
