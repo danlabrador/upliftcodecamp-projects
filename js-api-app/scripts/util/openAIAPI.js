@@ -1,7 +1,26 @@
+/**
+ * OpenAI API class
+ * 
+ * @method getCompletion - Retrieves a completion from the OpenAI API
+ *   @param {string} prompt - Prompt for the AI
+ *   @param {string} userId - User ID
+ *   @param {string} [instructions='You are a helpful assistant.'] - Instructions for the AI
+ *   @param {string} [model='gpt-3.5-turbo'] - Model to use for the completion
+ *   @returns {Object} - Completion object
+ */
+
 import RetryUtil from './RetryUtil.js';
 
 class OpenAI {
-  async getCompletion(prompt, userId, instructions = 'You are a helpful assistant.', model = 'gpt-3.5-turbo') {
+  static async getCompletion({
+    prompt,
+    userId,
+    instructions = 'You are a helpful assistant.',
+    max_tokens = 256,
+    model = 'gpt-3.5-turbo',
+    temperature = 0.8,
+    top_p = 1
+  } = {}) {
     if (!prompt) throw new Error('Prompt is required.');
 
     const validModels = [
@@ -27,9 +46,7 @@ class OpenAI {
       }
     ];
 
-    const temperature = 1.5;
-
-    const user = `aurorabeats/spotify:${userId}`;
+    const user = `aurora_beats/${userId}`;
 
     const options = {
       method: 'POST',
@@ -37,7 +54,7 @@ class OpenAI {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${process.env.AURORA_BEATS_OPENAI_KEY}`
       },
-      body: JSON.stringify({ model, messages, temperature, user })
+      body: JSON.stringify({ messages, max_tokens, model, top_p, temperature, user })
     };
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', options)

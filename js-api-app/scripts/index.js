@@ -5,25 +5,15 @@ const main = async () => {
   const spotify = new SpotifyAPI();
   const playlistManager = new PlaylistManager(spotify);
 
+  const user = await spotify.getUser();
+
   let searchResults = await playlistManager.searchTracks('lofi');
   reviewPlaylists(playlistManager);
 
-  const firstTrack = searchResults[0];
-  playlistManager.addToStaging(firstTrack);
+  searchResults = await playlistManager.recommendTracks('I want to listen Christian worship/slow music. Suggest 35 songs.', user.id);
   reviewPlaylists(playlistManager);
 
-  searchResults = await playlistManager.searchTracks('jazz');
-  reviewPlaylists(playlistManager);
 
-  const secondTrack = searchResults[0];
-  playlistManager.addToStaging(secondTrack);
-  reviewPlaylists(playlistManager);
-
-  // const playlistName = 'TestData';
-  // const playlist = await playlistManager.savePlaylist(playlistName);
-  // console.log(playlist);
-  // console.log('Playlist Saved');
-  // reviewPlaylists(playlistManager);
 }
 
 function reviewPlaylists(playlistManager) {
