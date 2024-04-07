@@ -154,14 +154,3 @@ class PlaylistManager {
 }
 
 export default PlaylistManager;
-
-/**
- * OpenAI API class
- * 
- * @method getCompletion - Retrieves a completion from the OpenAI API
- *   @param {string} prompt - Prompt for the AI
- *   @param {string} userId - User ID
- *   @param {string} [instructions='You are a helpful assistant.'] - Instructions for the AI
- *   @param {string} [model='gpt-3.5-turbo'] - Model to use for the completion
- *   @returns {Object} - Completion object
- */
