@@ -23,6 +23,7 @@ class OpenAI {
     top_p = 1
   } = {}) {
     if (!prompt) throw new Error('Prompt is required.');
+    if (!userId) throw new Error('User ID is required.');
 
     const validModels = [
       'gpt-4',
