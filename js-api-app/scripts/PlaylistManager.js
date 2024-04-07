@@ -6,6 +6,16 @@
  *   @param {SpotifyAPI} spotify - Spotify API object
  *   @returns {Array<Object>} - Array of track objects
  * 
+ * @method recommendTracks - Recommends tracks using OpenAI
+ *   @param {string} prompt - Prompt for the AI
+ *   @param {string} userId - User ID
+ *   @returns {Array<Object>} - Array of track objects
+ * 
+ * @method recommendNewTracks - Recommends new tracks using Spotify's new releases
+ *   @param {SpotifyAPI} spotify - Spotify API object
+ *   @param {number} [limit=20] - Limit of tracks to recommend 
+ *   @returns {Array<Object>} - Array of track objects
+ * 
  * @method clearSuggestions - Clears the track suggestions array
  *   @returns {Array<Object>} - Array of track objects that were cleared
  * 

@@ -3,7 +3,7 @@
  * 
  * @property {Object} album
  *   @property {string} album.name
- *   @property {string} album.art
+ *   @property {string} album.art - URL of the album art in 300x300 resolution or the first image
  *   @property {string} album.external_url
  * @property {string} artist
  * @property {string} name

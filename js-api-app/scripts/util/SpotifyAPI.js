@@ -15,14 +15,35 @@
  *   @param {number} [limit=20] - Number of search results to limit (default: 20)
  *   @returns {Array<Object>} - Array of track objects
  * 
+ * @method getRecommendations - Retrieves track recommendations based on seed tracks
+ *   @docs https://developer.spotify.com/documentation/web-api/reference/get-recommendations
+ *   @param {Array<Object>} tracks - Array of seed track objects
+ *   @param {number} [limit=20] - Number of recommendations to limit (default: 20)
+ *   @returns {Array<Object>} - Array of track objects
+ * 
+ * @method getNewReleases - Retrieves new album releases
+ *   @docs https://developer.spotify.com/documentation/web-api/reference/get-new-releases
+ *   @param {number} [limit=20] - Number of new releases to limit (default: 20)
+ *   @returns {Array<Object>} - Array of album objects
+ * 
+ * @method getTracksFromAlbum - Retrieves tracks from an album
+ *   @docs https://developer.spotify.com/documentation/web-api/reference/get-an-albums-tracks
+ *   @param {Object} album - Album object
+ *   @param {number} [limit=1] - Number of tracks to limit (default: 1)
+ *   @returns {Array<Object>} - Array of track objects
+ * 
+ * 
  * @method getUser - Retrieves the user's Spotify profile
+ *   @docs https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile
  *   @returns {Object} - User object
  * 
  * @method createPlaylist - Creates a new playlist in the user's Spotify account
+ *   @docs https://developer.spotify.com/documentation/web-api/reference/create-playlist
  *   @param {string} name - Playlist name
  *   @returns {Object} - Playlist object
  * 
  * @method addTracksToPlaylist - Saves a playlist to the user's Spotify account
+ *   @docs https://developer.spotify.com/documentation/web-api/reference/add-tracks-to-playlist
  *   @param {Object} playlist - Playlist object
  *   @param {Array<string>} uriArr - Array of track URIs
  *   @returns {Object} - Playlist object

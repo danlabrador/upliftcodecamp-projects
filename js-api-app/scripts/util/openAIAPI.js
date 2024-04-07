@@ -2,6 +2,7 @@
  * OpenAI API class
  * 
  * @method getCompletion - Retrieves a completion from the OpenAI API
+ *   @docs https://platform.openai.com/docs/api-reference/chat/create
  *   @param {string} prompt - Prompt for the AI
  *   @param {string} userId - User ID
  *   @param {string} [instructions='You are a helpful assistant.'] - Instructions for the AI
