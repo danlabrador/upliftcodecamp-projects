@@ -8,9 +8,18 @@ const main = async () => {
   const user = await spotify.getUser();
 
   let searchResults = await playlistManager.searchTracks('lofi');
+  playlistManager.addTracksToStaging(searchResults.slice(0, 5));
+  reviewPlaylists(playlistManager);
+
+  searchResults = await playlistManager.recommendTracks('Recommend songs by Billie Eilish', user.id);
+  playlistManager.addTracksToStaging(searchResults.slice(0, 5));
   reviewPlaylists(playlistManager);
 
   searchResults = await playlistManager.recommendNewTracks(spotify);
+  playlistManager.addTracksToStaging(searchResults.slice(0, 5));
+  reviewPlaylists(playlistManager);
+
+  playlistManager.removeFromStaging(playlistManager.stagingPlaylist[0]);
   reviewPlaylists(playlistManager);
 
 }

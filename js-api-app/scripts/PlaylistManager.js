@@ -117,9 +117,14 @@ class PlaylistManager {
     return temp;
   }
 
-  addToStaging(track) {
+  addTrackToStaging(track) {
     this._stagingPlaylist.push(track);
     return track;
+  }
+
+  addTracksToStaging(tracks) {
+    this._stagingPlaylist = this._stagingPlaylist.concat(tracks);
+    return tracks;
   }
 
   removeFromStaging(track) {
