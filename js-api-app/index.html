@@ -16,7 +16,238 @@
     <!-- Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="#" />
     <link rel="icon" type="image/png" sizes="16x16" href="#" />
+
+    <!-- Scripts -->
     <script type="module" src="./src/scripts/index.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body></body>
+  <body class="flex flex-col justify-center bg-slate-300">
+    <!-- App Screen -->
+    <div
+      id="app"
+      class="container bg-black min-h-screen mt-4 mx-auto"
+      style="width: 375px"
+    >
+      <div
+        class="fixed top-0 left-0 cover h-8 bg-slate-300 z-10 flex w-full"
+      ></div>
+      <header
+        class="fixed top-0 left-0 right-0 flex justify-between items-center text-white font-medium h-14 p-4 border-b border-gray-800 bg-black z-10 mx-auto mt-8"
+        style="width: 375px"
+      >
+        <!-- Greetings -->
+        <div class="header__greetings flex text-sm items-center">
+          <div
+            class="header__avatar-container h-7 w-7 rounded-full overflow-hidden"
+          >
+            <img
+              class="header__avatar object-cover"
+              src="./src/img/placeholder-avatar.png"
+              alt="User's Profile Picture"
+            />
+          </div>
+          <span class="header__greetings-text ml-1">Hey there,&nbsp;</span>
+          <span class="header__first-name">friend</span>!
+        </div>
+
+        <!-- Button: New Releases -->
+        <img
+          class="filter grayscale brightness-200 cursor-pointer"
+          src="./src/img/icon-new-releases.svg"
+          alt="new releases icon"
+        />
+      </header>
+      <main class="tracks pb-40 mt-24 mb-12" id="tracks">
+        <!-- Featured Track -->
+        <section
+          class="track-container track-container--highlight bg-pink-600 py-2 px-3 mx-4 rounded-lg flex items-center text-white"
+        >
+          <img
+            class="rounded-xl"
+            src="./src/img/album-art-lg.svg"
+            alt="album art"
+          />
+
+          <div class="track-details flex flex-col ml-3">
+            <span class="text-sm font-medium">Song Title</span>
+            <span class="text-xs">
+              <span
+                class="border border-white px-1 rounded-sm inline-flex py-0 relative"
+                style="font-size: 0.65em; line-height: 1.5em; top: -1px"
+                >BeatsAI</span
+              >
+              <span>Artist Name</span>
+            </span>
+          </div>
+          <div class="controls__panel flex items-center ml-auto gap-2">
+            <div>
+              <img
+                class="controls__icon controls__icon--add cursor-pointer"
+                src="./src/img/icon-add.svg"
+                alt="next icon"
+              />
+            </div>
+            <div class="mr-1">
+              <img
+                class="controls__icon--play cursor-pointer"
+                src="./src/img/icon-play.svg"
+                alt="play icon"
+              />
+              <img
+                class="controls__icon--pause hidden cursor-pointer"
+                src="./src/img/icon-pause.svg"
+                alt="pause icon"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- Track -->
+        <section
+          class="track-container py-2 px-3 mx-4 rounded-lg flex items-center text-white"
+        >
+          <img
+            class="rounded-xl"
+            src="./src/img/album-art-lg.svg"
+            alt="album art"
+          />
+
+          <div class="track-details flex flex-col ml-3">
+            <span class="text-sm font-medium">Song Title</span>
+            <span class="text-xs">
+              <span>Artist Name</span>
+            </span>
+          </div>
+          <div class="controls__panel flex items-center ml-auto gap-2">
+            <div>
+              <img
+                class="controls__icon controls__icon--add cursor-pointer"
+                src="./src/img/icon-add.svg"
+                alt="next icon"
+              />
+            </div>
+            <div class="mr-1">
+              <img
+                class="controls__icon--play cursor-pointer"
+                src="./src/img/icon-play.svg"
+                alt="play icon"
+              />
+              <img
+                class="controls__icon--pause hidden cursor-pointer"
+                src="./src/img/icon-pause.svg"
+                alt="pause icon"
+              />
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Bottom Controls -->
+      <div
+        class="flex flex-col controls fixed bottom-0 bg-black"
+        style="width: 375px"
+      >
+        <!-- Player -->
+        <div
+          class="mobile__player bg-indigo-900 text-white mx-3 p-2 rounded-md flex items-center"
+        >
+          <a
+            class="rounded-md"
+            href="#"
+            style="background-image: url('./src/img/album-art.svg')"
+          >
+            <img
+              class="h-10 w-10 opacity-0 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+              src="./src/img/art-hover-overlay.png"
+              alt=""
+            />
+          </a>
+          <div class="track-details flex flex-col ml-3">
+            <span class="text-sm font-medium">Song Title</span>
+            <span class="text-xs">Artist Name</span>
+          </div>
+          <div class="controls__panel flex items-center ml-auto gap-2">
+            <div>
+              <img
+                class="controls__icon controls__icon--add cursor-pointer"
+                src="./src/img/icon-add.svg"
+                alt="next icon"
+              />
+            </div>
+            <div class="mr-1">
+              <img
+                class="controls__icon--play cursor-pointer"
+                src="./src/img/icon-play.svg"
+                alt="play icon"
+              />
+              <img
+                class="controls__icon--pause hidden cursor-pointer"
+                src="./src/img/icon-pause.svg"
+                alt="pause icon"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div
+          class="flex items-center search bg-white px-4 py-2 mx-4 mt-3 rounded-md"
+        >
+          <img
+            class="search__icon"
+            src="./src/img/icon-searchbox-icon.svg"
+            alt="search icon"
+          />
+          <textarea
+            class="search__input w-full text-black text-sm resize-none h-5 ml-2 focus:outline-none"
+            placeholder="Search for songs, artists, or albums"
+          ></textarea>
+          <div
+            class="search__enable-ai bg-gray-200 text-gray-500 w-7 h-6 cursor-pointer rounded-md flex items-center justify-center"
+          >
+            <img
+              class="search__enable-ai-icon"
+              src="./src/img/icon-ai.svg"
+              alt="AI icon"
+            />
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex mobile w-full mb-1 h-12 bg-black">
+          <ul class="flex justify-evenly w-full">
+            <li
+              class="flex items-center mobile__nav-item text-white text-sm cursor-pointer"
+            >
+              <img src="./src/img/icon-browse.svg" alt="browse icon" />
+              <span class="ml-2 text-pink-300">Browse</span>
+            </li>
+            <!-- <li
+              class="flex items-center mobile__nav-item text-white text-sm cursor-pointer"
+            >
+              <img
+                class="filter grayscale brightness-200"
+                src="./src/img/icon-cart.svg"
+                alt="cart icon"
+              />
+              <span class="ml-2">Cart</span>
+            </li> -->
+            <li
+              class="flex items-center mobile__nav-item text-white text-sm cursor-pointer"
+            >
+              <img
+                class="filter grayscale brightness-200"
+                src="./src/img/icon-collection.svg"
+                alt="collection icon"
+              />
+              <span class="ml-2">Collection</span>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Cover -->
+        <div class="cover bg-slate-300 h-8"></div>
+      </div>
+    </div>
+  </body>
 </html>

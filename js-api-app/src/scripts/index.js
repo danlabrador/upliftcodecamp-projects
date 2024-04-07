@@ -1,9 +1,19 @@
 import SpotifyAPI from './util/SpotifyAPI.js';
 import PlaylistManager from './PlaylistManager.js';
 
+const spotify = new SpotifyAPI();
+const manager = new PlaylistManager(spotify);
+
 const main = async () => {
-  const spotify = new SpotifyAPI();
-  spotify.init();
+  // Initialize Application
+  await manager.init()
+
+  // Search
+  await manager.searchTracks('Christian Modern Songs')
+  // await manager.addTracksToStaging();
+  console.log(manager.trackSuggestions.slice(0, 1))
+  consoleTest(manager);
+  manager.renderSuggestions();
 }
 
 main();

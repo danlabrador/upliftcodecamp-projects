@@ -33,10 +33,13 @@
  *   @returns {Object} - Playlist object that was created and saved to the user's account
  */
 
-import OpenAI from './util/OpenAIAPI.js';
+import App from './App.js';
 
-class PlaylistManager {
-  constructor(spotify) {
+import OpenAI from './util/OpenAIAPI.js';
+import '../img/icon-add.svg';
+
+class PlaylistManager extends App {
+  super(spotify) {
     this._trackSuggestions = [];
     this._stagingPlaylist = [];
     this._spotify = spotify;
@@ -150,6 +153,101 @@ class PlaylistManager {
     playlist.snapshot_id = snapshot.snapshot_id;
     this._stagingPlaylist = [];
     return playlist;
+  }
+
+  async renderSuggestions() {
+    // Render the track suggestions
+    const tracksContainer = document.getElementById('tracks');
+    tracksContainer.innerHTML = '';
+
+    this._trackSuggestions.forEach((track, index) => {
+      const trackElement = document.createElement('div');
+      trackElement.classList.add('track');
+      trackElement.setAttribute('data-index', index);
+
+      // Create the featured track section
+      const featuredTrackSection = document.createElement('section');
+      featuredTrackSection.classList.add('track-container', 'track-container--highlight', 'bg-pink-600', 'py-2', 'px-3', 'mx-4', 'rounded-lg', 'flex', 'items-center', 'text-white');
+
+      // Create the album art image
+      const albumArtImage = document.createElement('img');
+      albumArtImage.classList.add('rounded-lg');
+      albumArtImage.src = track.album.art;
+      albumArtImage.alt = 'album art';
+      albumArtImage.width = 56;
+      albumArtImage.height = 56;
+      featuredTrackSection.appendChild(albumArtImage);
+
+      // Create the track details container
+      const trackDetailsContainer = document.createElement('div');
+      trackDetailsContainer.classList.add('track-details', 'flex', 'flex-col', 'ml-3');
+
+      // Create the track title element
+      const trackTitleElement = document.createElement('span');
+      trackTitleElement.classList.add('text-sm', 'font-medium');
+      track.name.length > 40 ?
+        trackTitleElement.textContent = track.name.slice(0, 40) + '...' :
+        trackTitleElement.textContent = track.name;
+      trackDetailsContainer.appendChild(trackTitleElement);
+
+      // Create the track artist element
+      const trackArtistElement = document.createElement('span');
+      trackArtistElement.classList.add('text-xs');
+      const beatsAIElement = document.createElement('span');
+      beatsAIElement.classList.add('border', 'border-white', 'px-1', 'rounded-sm', 'inline-flex', 'py-0', 'relative');
+      beatsAIElement.style.fontSize = '0.65em';
+      beatsAIElement.style.lineHeight = '1.5em';
+      beatsAIElement.style.top = '-1px';
+      beatsAIElement.textContent = 'BeatsAI';
+      trackArtistElement.appendChild(beatsAIElement);
+      const artistNameElement = document.createElement('span');
+      artistNameElement.textContent = track.artist;
+      trackArtistElement.appendChild(artistNameElement);
+      trackDetailsContainer.appendChild(trackArtistElement);
+
+      featuredTrackSection.appendChild(trackDetailsContainer);
+
+      // Create the controls panel
+      const controlsPanel = document.createElement('div');
+      controlsPanel.classList.add('controls__panel', 'flex', 'items-center', 'ml-auto', 'gap-2');
+
+      // Create the add icon
+      const addIcon = document.createElement('div');
+      const addIconImage = document.createElement('img');
+      addIconImage.classList.add('controls__icon', 'controls__icon--add', 'cursor-pointer');
+      addIconImage.src = './src/img/icon-add.svg';
+      addIconImage.alt = 'next icon';
+      addIcon.appendChild(addIconImage);
+      controlsPanel.appendChild(addIcon);
+
+      if (track.preview_url) {
+        // Create the play/pause icons
+        const playIcon = document.createElement('div');
+        const playIconImage = document.createElement('img');
+        playIconImage.classList.add('controls__icon--play', 'cursor-pointer');
+        playIconImage.src = './src/img/icon-play.svg';
+        playIconImage.alt = 'play icon';
+        playIcon.appendChild(playIconImage);
+        const pauseIcon = document.createElement('img');
+        pauseIcon.classList.add('controls__icon--pause', 'hidden', 'cursor-pointer');
+        pauseIcon.src = './src/img/icon-pause.svg';
+        pauseIcon.alt = 'pause icon';
+        playIcon.appendChild(pauseIcon);
+        controlsPanel.appendChild(playIcon);
+      }
+
+      featuredTrackSection.appendChild(controlsPanel);
+
+      trackElement.appendChild(featuredTrackSection);
+
+      trackElement.getElementsByClassName('controls__icon--add')[0].addEventListener('click', (event) => {
+        const index = event.target.getAttribute('data-index');
+        this.addTrackToStaging(this._trackSuggestions[index]);
+        this.renderStaging();
+      });
+
+      tracksContainer.appendChild(trackElement);
+    });
   }
 }
 
