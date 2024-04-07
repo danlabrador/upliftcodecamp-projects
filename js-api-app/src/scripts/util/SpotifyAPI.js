@@ -32,7 +32,6 @@
  *   @param {number} [limit=1] - Number of tracks to limit (default: 1)
  *   @returns {Array<Object>} - Array of track objects
  * 
- * 
  * @method getUser - Retrieves the user's Spotify profile
  *   @docs https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile
  *   @returns {Object} - User object
@@ -57,6 +56,10 @@ class SpotifyAPI {
     this._accessToken = null;
     this._expiresIn = null;
     this._userId = null;
+  }
+
+  init() {
+    this.getAccessToken();
   }
 
   getAccessToken() {
