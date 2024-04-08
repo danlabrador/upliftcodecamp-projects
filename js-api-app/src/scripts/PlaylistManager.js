@@ -1,37 +1,55 @@
 /**
- * Class to manage the playlist creation process
+ * Manages the playlist creation and interaction process, integrating Spotify and OpenAI for track recommendations and playlist management.
+ *
+ * This class handles track searching, AI-driven recommendations, managing a staging playlist for user review before saving to Spotify, and more. It serves as the core controller for the user interface, allowing for dynamic interaction with music data.
+ *
+ * @class PlaylistManager
+ * @extends {App}
  * 
- * @method searchTracks - Searches for tracks on Spotify
- *   @param {string} term - Search term
- *   @param {SpotifyAPI} spotify - Spotify API object
- *   @returns {Array<Object>} - Array of track objects
+ * Methods:
+ * @method addEventListeners - Registers event listeners for user interactions with the UI.
  * 
- * @method recommendTracks - Recommends tracks using OpenAI
- *   @param {string} prompt - Prompt for the AI
- *   @param {string} userId - User ID
- *   @returns {Array<Object>} - Array of track objects
+ * @method searchTracks - Searches for tracks on Spotify based on a given search term.
+ *   @param {string} term - The search term used to find tracks on Spotify.
+ *   @returns {Array<Object>} Returns an array of track objects found on Spotify.
  * 
- * @method recommendNewTracks - Recommends new tracks using Spotify's new releases
- *   @param {SpotifyAPI} spotify - Spotify API object
- *   @param {number} [limit=20] - Limit of tracks to recommend 
- *   @returns {Array<Object>} - Array of track objects
+ * @method recommendTracks - Generates track recommendations using OpenAI based on a given prompt.
+ *   @param {string} prompt - The AI prompt used to generate track recommendations.
+ *   @param {string} userId - The user's ID for personalized track recommendations.
+ *   @returns {Array<Object>} Returns an array of recommended track objects.
  * 
- * @method clearSuggestions - Clears the track suggestions array
- *   @returns {Array<Object>} - Array of track objects that were cleared
+ * @method recommendNewTracks - Generates recommendations for new tracks using Spotify's new releases feature.
+ *   @param {SpotifyAPI} spotify - Instance of Spotify API object used to find new releases.
+ *   @param {number} [limit=20] - Optional. The maximum number of tracks to recommend. Defaults to 20.
+ *   @returns {Array<Object>} Returns an array of newly released track objects.
  * 
- * @method addToStaging - Adds a track to the staging playlist
- *   @param {Object} track - Track object
- *   @returns {Object} - Track object that was added
+ * @method clearSuggestions - Clears the internal array of track suggestions.
+ *   @returns {Array<Object>} Returns the array of track objects that were cleared.
  * 
- * @method removeFromStaging - Removes a track from the staging playlist
- *   @param {Object} track - Track object
- *   @returns {Object} - Track object that was removed
+ * @method addTrackToStaging - Adds a single track to the staging playlist.
+ *   @param {Object} track - The track object to add to the staging playlist.
+ *   @returns {Object} Returns the track object that was added to the staging playlist.
+ *
+ * @method addTracksToStaging - Adds multiple tracks to the staging playlist.
+ *   @param {Array<Object>} tracks - An array of track objects to add to the staging playlist.
+ *   @returns {Array<Object>} Returns the array of track objects that were added.
  * 
- * @method savePlaylist - Saves the staging playlist to the user's Spotify account
- *   @param {string} name - Playlist name
- *   @param {SpotifyAPI} spotify - Spotify API object
- *   @returns {Object} - Playlist object that was created and saved to the user's account
+ * @method removeFromStaging - Removes a selected track from the staging playlist.
+ *   @param {Object} track - The track object to remove from the staging playlist.
+ *   @returns {Object} Returns the track object that was removed from the staging playlist.
+ * 
+ * @method savePlaylist - Saves the current staging playlist to the user's Spotify account with a given name.
+ *   @param {string} name - The name for the new playlist to be saved on Spotify.
+ *   @returns {Object} Returns the playlist object that was created and saved to the user's Spotify account.
+ *
+ * @method renderTracks - Renders tracks in the UI based on a provided list of track objects.
+ *   @param {Array<Object>} list - The list of track objects to render in the UI.
+ * 
+ * @method setActiveTrack - Sets a track as the currently active track for preview and interaction.
+ *   @param {Object} track - The track object to set as active.
+ *   @returns {Element} Returns the player element that was created or interacted with.
  */
+
 
 import App from './App.js';
 import OpenAI from './util/OpenAIAPI.js';
