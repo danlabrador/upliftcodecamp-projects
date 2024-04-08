@@ -38,6 +38,7 @@ import OpenAI from './util/OpenAIAPI.js';
 import playIconSrc from '../img/icon-play.svg';
 import pauseIconSrc from '../img/icon-pause.svg';
 import addIconSrc from '../img/icon-add.svg';
+import removeIconSrc from '../img/icon-remove.svg';
 import artHoverOverlaySrc from '../img/art-hover-overlay.png';
 
 class PlaylistManager extends App {
@@ -48,23 +49,34 @@ class PlaylistManager extends App {
     this._spotify = spotify;
     this._newReleasesBtnState = true;
     this._auroraAIState = false;
+    this._browseModeState = true;
     this.addEventListeners();
   }
 
   addEventListeners() {
     // See results
     document.getElementById('browse-btn').addEventListener('click', async () => {
-      this.renderTracks(this._stagingPlaylist);
+      this._browseModeState = true;
+      document.getElementById('browse-icon').classList.remove('filter', 'grayscale', 'brightness-200');
+      document.getElementById('browse-text').classList.add('text-pink-300');
+      document.getElementById('collection-icon').classList.add('filter', 'grayscale', 'brightness-200');
+      document.getElementById('collection-text').classList.remove('text-pink-300');
+      this.renderTracks(this._trackSuggestions);
     });
 
     // See collection
     document.getElementById('collection-btn').addEventListener('click', async () => {
+      this._browseModeState = false;
+      document.getElementById('collection-icon').classList.remove('filter', 'grayscale', 'brightness-200');
+      document.getElementById('collection-text').classList.add('text-pink-300');
+      document.getElementById('browse-icon').classList.add('filter', 'grayscale', 'brightness-200');
+      document.getElementById('browse-text').classList.remove('text-pink-300');
       this.renderTracks(this._stagingPlaylist);
     });
 
     // Recommend New Tracks
     (async () => {
-      document.getElementById('new-releases-btn').classList.remove('filter', 'grayscale', 'brightness-1000');
+      document.getElementById('new-releases-btn').classList.remove('filter', 'grayscale', 'brightness-200');
       document.getElementById('new-releases-btn-container').classList.add('bg-pink-200');
       this._newReleasesBtnState = true;
       const newTracks = await this.recommendNewTracks(this._spotify);
@@ -73,13 +85,13 @@ class PlaylistManager extends App {
 
     document.getElementById('new-releases-btn-container').addEventListener('click', async () => {
       if (!this._newReleasesBtnState) {
-        document.getElementById('new-releases-btn').classList.remove('filter', 'grayscale', 'brightness-1000');
+        document.getElementById('new-releases-btn').classList.remove('filter', 'grayscale', 'brightness-200');
         document.getElementById('new-releases-btn-container').classList.add('bg-pink-200');
         this._newReleasesBtnState = true;
         const newTracks = await this.recommendNewTracks(this._spotify);
         this.renderTracks(newTracks);
       } else {
-        document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-1000');
+        document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-200');
         document.getElementById('new-releases-btn-container').classList.remove('bg-pink-200');
         this._newReleasesBtnState = false;
         this._trackSuggestions = [];
@@ -90,7 +102,7 @@ class PlaylistManager extends App {
     // Search for tracks on return key
     document.getElementById('search-input').addEventListener('keydown', async (event) => {
       if (event.key === 'Enter') {
-        document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-1000');
+        document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-200');
         document.getElementById('new-releases-btn-container').classList.remove('bg-pink-200');
         this._newReleasesBtnState = false;
       }
@@ -280,7 +292,7 @@ class PlaylistManager extends App {
       albumArtImage.alt = 'album art';
       albumArtImage.style.width = '100%';
       albumArtImage.style.height = '100%';
-      albumArtImage.style.objectFit = 'cover';
+      albumArtImage.style.objectFit = 'fill';
       albumArtImage.style.position = 'absolute';
       albumArtImage.style.top = '0';
       albumArtImage.style.left = '0';
@@ -352,32 +364,58 @@ class PlaylistManager extends App {
 
         playIconImage.addEventListener('click', (event) => {
           const index = event.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-index');
-          this.setActiveTrack(this._trackSuggestions[index]);
+          if (this._browseModeState) {
+            this.setActiveTrack(this._trackSuggestions[index]);
+          } else {
+            this.setActiveTrack(this._stagingPlaylist[index]);
+          }
         })
 
       }
 
-      // Create the add icon
+      // Create the add icon or remove icon depending on the mode
       const addIcon = document.createElement('div');
       const addIconImage = document.createElement('img');
       addIconImage.classList.add('controls__icon', 'controls__icon--add', 'cursor-pointer');
       addIconImage.src = addIconSrc;
       addIconImage.alt = 'add to collection icon';
       addIcon.appendChild(addIconImage);
-      controlsPanel.appendChild(addIcon);
+
+      const removeIcon = document.createElement('div');
+      const removeIconImage = document.createElement('img');
+      removeIconImage.classList.add('controls__icon', 'controls__icon--remove', 'cursor-pointer');
+      removeIconImage.src = removeIconSrc;
+      removeIconImage.alt = 'remove from collection icon';
+      removeIcon.appendChild(removeIconImage);
+
+      if (this._browseModeState) {
+        console.log(addIcon)
+        controlsPanel.appendChild(addIcon);
+      } else {
+        console.log(removeIcon)
+        controlsPanel.appendChild(removeIcon);
+      }
 
       featuredTrackSection.appendChild(controlsPanel);
 
       trackElement.appendChild(featuredTrackSection);
 
-      trackElement.getElementsByClassName('controls__icon--add')[0].addEventListener('click', (event) => {
-        const index = event.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-index');
-        // Check if the track is already in the staging playlist
-        const existingTrack = this._stagingPlaylist.find(item => item === this._trackSuggestions[index]);
-        if (!existingTrack) {
-          this.addTrackToStaging(this._trackSuggestions[index]);
-        }
-      });
+      if (this._browseModeState) {
+        trackElement.getElementsByClassName('controls__icon--add')[0].addEventListener('click', (event) => {
+          const index = event.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-index');
+          // Check if the track is already in the staging playlist
+          const existingTrack = this._stagingPlaylist.find(item => item === this._trackSuggestions[index]);
+          if (!existingTrack) {
+            this.addTrackToStaging(this._trackSuggestions[index]);
+          }
+        });
+      } else {
+        trackElement.getElementsByClassName('controls__icon--remove')[0].addEventListener('click', (event) => {
+          const index = event.target.parentNode.parentNode.parentNode.parentNode.getAttribute('data-index');
+          this.removeFromStaging(this._stagingPlaylist[index]);
+          this.renderTracks(this._stagingPlaylist);
+        });
+      }
 
       tracksContainer.appendChild(trackElement);
     });
@@ -395,12 +433,17 @@ class PlaylistManager extends App {
 
     const albumArtLink = document.createElement('a');
     albumArtLink.classList.add('rounded-md');
-    albumArtLink.href = '#';
+    albumArtLink.href = track.spotify_url;
     albumArtLink.style.backgroundImage = `url(${track.album.art})`;
+    albumArtLink.style.backgroundSize = 'cover';
+    albumArtLink.style.backgroundPosition = 'center';
+    albumArtLink.style.overflow = 'hidden';
+    albumArtLink.style.position = 'relative';
+
 
     const albumArtImage = document.createElement('img');
     albumArtImage.classList.add('h-10', 'w-10', 'opacity-0', 'hover:opacity-100', 'transition-opacity', 'duration-200', 'cursor-pointer');
-    albumArtImage.src = './src/img/art-hover-overlay.png';
+    albumArtImage.src = artHoverOverlaySrc;
     albumArtImage.alt = '';
 
     albumArtLink.appendChild(albumArtImage);
@@ -468,6 +511,7 @@ class PlaylistManager extends App {
       const pauseIcon = player.getElementsByClassName('controls__icon--pause')[0];
 
       let audio = new Audio(track.preview_url);
+      audio.volume = 0.5;
 
       // Play immediately as the player is created
       audio.play();
