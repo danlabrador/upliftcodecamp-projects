@@ -12,7 +12,7 @@ AuroraBeats allows users to log in with their Spotify account to fetch, create, 
 - **Integration with Spotify API**: Facilitates direct manipulation of user playlists within the application.
 - **OpenAI Recommendations**: Leverages OpenAI's powerful GPT model to generate music recommendations.
 - **Vanilla JavaScript Implementation**: Demonstrates pure JavaScript functionality for all operations, emphasizing the core language's power.
-- **Tailwind CSS Styling**: Utilizes Tailwind CSS for an elegant, responsive design.
+- **Tailwind CSS Styling**: Utilizes Tailwind CSS for an elegant design.
 
 ## Getting Started
 
