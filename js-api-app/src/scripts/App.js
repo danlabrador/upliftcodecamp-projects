@@ -1,3 +1,5 @@
+import avatar from '../img/placeholder-avatar.png'
+
 class App {
   constructor(spotify) {
     this._spotify = spotify;
@@ -12,7 +14,9 @@ class App {
     this._user = await this._spotify.getUser();
 
     // Update header
-    document.getElementsByClassName('header__avatar')[0].src = this._user.images[0].url;
+    if (this._user.images.length !== 0) {
+      document.getElementsByClassName('header__avatar')[0].src = this._user.images[0].url;
+    }
     document.getElementsByClassName('header__first-name')[0].textContent = this._user.display_name.split(' ')[0];
 
     // Get user time and update greeting based on time of day
