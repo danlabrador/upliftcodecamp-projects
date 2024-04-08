@@ -89,6 +89,12 @@ class PlaylistManager extends App {
 
     // Search for tracks on return key
     document.getElementById('search-input').addEventListener('keydown', async (event) => {
+      if (event.key === 'Enter') {
+        document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-1000');
+        document.getElementById('new-releases-btn-container').classList.remove('bg-pink-200');
+        this._newReleasesBtnState = false;
+      }
+
       if (event.key === 'Enter' && this._auroraAIState === false) {
         const term = event.target.value;
         event.target.value = '';
