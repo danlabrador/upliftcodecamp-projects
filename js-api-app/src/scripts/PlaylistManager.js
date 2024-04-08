@@ -61,6 +61,7 @@ class PlaylistManager extends App {
       document.getElementById('browse-text').classList.add('text-pink-300');
       document.getElementById('collection-icon').classList.add('filter', 'grayscale', 'brightness-200');
       document.getElementById('collection-text').classList.remove('text-pink-300');
+      document.getElementById('playlist-header').classList.add('hidden');
       this.renderTracks(this._trackSuggestions);
     });
 
@@ -71,6 +72,7 @@ class PlaylistManager extends App {
       document.getElementById('collection-text').classList.add('text-pink-300');
       document.getElementById('browse-icon').classList.add('filter', 'grayscale', 'brightness-200');
       document.getElementById('browse-text').classList.remove('text-pink-300');
+      document.getElementById('playlist-header').classList.remove('hidden');
       this.renderTracks(this._stagingPlaylist);
     });
 
@@ -89,6 +91,15 @@ class PlaylistManager extends App {
         document.getElementById('new-releases-btn-container').classList.add('bg-pink-200');
         this._newReleasesBtnState = true;
         const newTracks = await this.recommendNewTracks(this._spotify);
+
+        if (this._stagingPlaylist.length > 0) {
+          const supplementaryTracks = await this._spotify.getRecommendations(this._stagingPlaylist.slice(0, 5), 3);
+          supplementaryTracks.forEach(track => {
+            track.featured = true;
+            this._trackSuggestions.unshift(track);
+          });
+        }
+
         this.renderTracks(newTracks);
       } else {
         document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-200');
@@ -102,6 +113,13 @@ class PlaylistManager extends App {
     // Search for tracks on return key
     document.getElementById('search-input').addEventListener('keydown', async (event) => {
       if (event.key === 'Enter') {
+        this._browseModeState = true;
+        document.getElementById('browse-icon').classList.remove('filter', 'grayscale', 'brightness-200');
+        document.getElementById('browse-text').classList.add('text-pink-300');
+        document.getElementById('collection-icon').classList.add('filter', 'grayscale', 'brightness-200');
+        document.getElementById('collection-text').classList.remove('text-pink-300');
+        document.getElementById('playlist-header').classList.add('hidden');
+        this.renderTracks(this._trackSuggestions);
         document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-200');
         document.getElementById('new-releases-btn-container').classList.remove('bg-pink-200');
         this._newReleasesBtnState = false;
@@ -111,14 +129,36 @@ class PlaylistManager extends App {
         const term = event.target.value;
         event.target.value = '';
         event.target.blur();
-        const results = await this.searchTracks(term);
-        this.renderTracks(results);
+        await this.searchTracks(term);
+
+        if (this._stagingPlaylist.length > 0) {
+          const supplementaryTracks = await this._spotify.getRecommendations(this._stagingPlaylist.slice(0, 5), 3);
+          supplementaryTracks.forEach(track => {
+            track.featured = true;
+            this._trackSuggestions.unshift(track);
+          });
+        }
+
+        this.renderTracks(this._trackSuggestions);
       } else if (event.key === 'Enter' && this._auroraAIState === true) {
         const prompt = event.target.value;
         event.target.value = '';
         event.target.blur();
-        const results = await this.recommendTracks(prompt, this._user.id);
-        this.renderTracks(results);
+        await this.recommendTracks(prompt, this._user.id);
+
+        this._trackSuggestions.forEach(async (track) => {
+          track.featured = true;
+        });
+
+        if (this._stagingPlaylist.length > 0) {
+          const supplementaryTracks = await this._spotify.getRecommendations(this._stagingPlaylist.slice(0, 5), 3);
+          supplementaryTracks.forEach(track => {
+            track.featured = true;
+            this._trackSuggestions.unshift(track);
+          });
+        }
+
+        this.renderTracks(this._trackSuggestions);
       }
     });
 
@@ -134,6 +174,32 @@ class PlaylistManager extends App {
         document.getElementById('ai-icon').classList.add('filter', 'grayscale', 'brightness-200');
         document.getElementById('search-input').placeholder = 'Search for songs, artists, or albums';
         this._auroraAIState = false;
+      }
+    });
+
+    // Save Playlist
+    document.getElementById('save-playlist-btn-container').addEventListener('click', async () => {
+      if (this._stagingPlaylist.length > 0 && document.getElementById('playlist-name-input').value !== '') {
+        const name = document.getElementById('playlist-name-input').value;
+        const playlist = await this.savePlaylist(name);
+        document.getElementById('playlist-name-input').value = '';
+        document.getElementById('playlist-name-input').blur();
+        this._stagingPlaylist = [];
+        this.renderTracks(this._stagingPlaylist);
+        const playlistLink = playlist.external_urls.spotify;
+        window.open(playlistLink, '_blank');
+        this._browseModeState = true;
+        document.getElementById('browse-icon').classList.remove('filter', 'grayscale', 'brightness-200');
+        document.getElementById('browse-text').classList.add('text-pink-300');
+        document.getElementById('collection-icon').classList.add('filter', 'grayscale', 'brightness-200');
+        document.getElementById('collection-text').classList.remove('text-pink-300');
+        document.getElementById('playlist-header').classList.add('hidden');
+        document.getElementById('new-releases-btn').classList.remove('filter', 'grayscale', 'brightness-200');
+        document.getElementById('new-releases-btn-container').classList.add('bg-pink-200');
+        this._newReleasesBtnState = true;
+        const newTracks = await this.recommendNewTracks(this._spotify);
+        this.renderTracks(newTracks);
+        document.getElementById('playlist-name-input').value = 'New Playlist';
       }
     });
 
@@ -334,6 +400,7 @@ class PlaylistManager extends App {
         featuredElement.style.top = '-1px';
         featuredElement.textContent = 'AuroraAI';
         trackArtistElement.appendChild(featuredElement);
+        featuredTrackSection.classList.add('mb-4');
       }
 
       const artistNameElement = document.createElement('span');
@@ -389,10 +456,8 @@ class PlaylistManager extends App {
       removeIcon.appendChild(removeIconImage);
 
       if (this._browseModeState) {
-        console.log(addIcon)
         controlsPanel.appendChild(addIcon);
       } else {
-        console.log(removeIcon)
         controlsPanel.appendChild(removeIcon);
       }
 
@@ -467,14 +532,6 @@ class PlaylistManager extends App {
     const controlsPanel = document.createElement('div');
     controlsPanel.classList.add('controls__panel', 'flex', 'items-center', 'ml-auto', 'gap-2', 'mr-2');
 
-    const addIconContainer = document.createElement('div');
-    const addIcon = document.createElement('img');
-    addIcon.classList.add('controls__icon', 'controls__icon--add', 'cursor-pointer');
-    addIcon.src = addIconSrc;
-    addIcon.alt = 'next icon';
-    addIconContainer.appendChild(addIcon);
-    controlsPanel.appendChild(addIconContainer);
-
     if (track.preview_url) {
       const playIconContainer = document.createElement('div');
       const playIcon = document.createElement('img');
@@ -497,13 +554,6 @@ class PlaylistManager extends App {
 
     const bottomControls = document.getElementById('bottom-controls');
     bottomControls.insertBefore(player, bottomControls.firstChild);
-
-    addIconContainer.addEventListener('click', () => {
-      const existingTrack = this._stagingPlaylist.find(item => item === track);
-      if (!existingTrack) {
-        this.addTrackToStaging(track);
-      }
-    });
 
     // Add play/pause functionality here
     if (track.preview_url) {

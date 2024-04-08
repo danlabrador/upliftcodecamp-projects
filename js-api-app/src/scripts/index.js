@@ -8,12 +8,8 @@ const main = async () => {
   // Initialize Application
   await manager.init();
   const tracks = await manager.recommendNewTracks(spotify);
-  console.log(tracks[0])
 }
 
-main();
-
-// ----------------------------
 function consoleTest(manager) {
   console.log('Track Suggestions')
   console.log(manager.trackSuggestions);
@@ -23,3 +19,5 @@ function consoleTest(manager) {
   console.log('------------------------')
   console.log(' ')
 }
+
+main();
