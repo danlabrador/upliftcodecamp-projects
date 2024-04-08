@@ -101,12 +101,6 @@ class PlaylistManager extends App {
         }
 
         this.renderTracks(newTracks);
-      } else {
-        document.getElementById('new-releases-btn').classList.add('filter', 'grayscale', 'brightness-200');
-        document.getElementById('new-releases-btn-container').classList.remove('bg-pink-200');
-        this._newReleasesBtnState = false;
-        this._trackSuggestions = [];
-        this.renderTracks(this._trackSuggestions);
       }
     });
 
