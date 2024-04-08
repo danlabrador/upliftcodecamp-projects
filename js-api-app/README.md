@@ -48,7 +48,7 @@ This command runs the app in development mode, accessible at `http://localhost:1
 
 ### Setting Up Environment Variables
 
-In the `upliftcodecamp-projects` directory, create a `.env` file with your Spotify and OpenAI credentials:
+In the root directory of the repository, create a `.env` file with your Spotify and OpenAI credentials:
 
 ```env
 AURORA_BEATS_OPENAI_KEY=your_openai_api_key
