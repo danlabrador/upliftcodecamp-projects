@@ -112,6 +112,8 @@ class PlaylistManager extends App {
 
     // Search for tracks on return key
     document.getElementById('search-input').addEventListener('keydown', async (event) => {
+      if (event.key === 'Enter' && event.target.value === '') return;
+
       if (event.key === 'Enter') {
         this._browseModeState = true;
         document.getElementById('browse-icon').classList.remove('filter', 'grayscale', 'brightness-200');
