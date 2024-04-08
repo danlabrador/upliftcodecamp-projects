@@ -32,19 +32,13 @@ To explore AuroraBeats, follow these setup instructions.
    git clone https://github.com/danlabrador/upliftcodecamp-projects.git
    ```
 
-2. Navigate to the `js-api-app` directory:
-
-   ```sh
-   cd upliftcodecamp-projects/js-api-app
-   ```
-
-3. Install dependencies:
+2. Install dependencies:
 
    ```sh
    npm install
    ```
 
-4. Start the application:
+3. Start the application:
 
    ```sh
    npm run dev-2
