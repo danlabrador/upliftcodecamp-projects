@@ -5,13 +5,13 @@ import { UpdateCoursePointsPayloadActionStatus } from './coursesThunks';
 
 // MARK: State
 type CoursesState = {
-  courses: Course[];
+  data: Course[];
   isLoading: boolean;
   error: string | null;
 };
 
 const initialState: CoursesState = {
-  courses: [],
+  data: [],
   isLoading: false,
   error: null,
 };
@@ -29,7 +29,7 @@ const coursesSlice = createSlice({
       })
       .addCase(loadCoursesAsync.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.courses = action.payload;
+        state.data = action.payload;
       })
       .addCase(updateCoursePointsAsync.pending, state => {
         state.isLoading = true;
@@ -40,8 +40,8 @@ const coursesSlice = createSlice({
         (state, action: PayloadAction<Course, string, UpdateCoursePointsPayloadActionStatus>) => {
           state.isLoading = false;
           const updatedCourse = action.payload;
-          const courseIndex = state.courses.findIndex(course => course.id === updatedCourse.id);
-          state.courses[courseIndex] = updatedCourse;
+          const courseIndex = state.data.findIndex(course => course.id === updatedCourse.id);
+          state.data[courseIndex] = updatedCourse;
         }
       );
   },

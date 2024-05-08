@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Assessment } from '../../../models/Assessment';
-import { loadAssessmentsAsync } from './assignmentsThunks';
+import { loadAssessmentsAsync } from './assessmentsThunks';
 
 // MARK: State
 type AssessmentState = {
-  assignments: Assessment[];
+  data: Assessment[];
   isLoading: boolean;
   error: string | null;
 };
 
 const initialState: AssessmentState = {
-  assignments: [],
+  data: [],
   isLoading: false,
   error: null,
 };
@@ -28,7 +28,7 @@ const coursesSlice = createSlice({
       })
       .addCase(loadAssessmentsAsync.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.assignments = action.payload;
+        state.data = action.payload;
       });
   },
 });

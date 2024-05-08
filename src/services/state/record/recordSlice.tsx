@@ -3,13 +3,13 @@ import { Record } from '../../../models/Record';
 
 // MARK: State
 type RecordState = {
-  record: Record | null;
+  data: Record | null;
   isLoading: boolean;
   error: string | null;
 };
 
 const initialState: RecordState = {
-  record: null,
+  data: null,
   isLoading: false,
   error: null,
 };
@@ -20,10 +20,10 @@ const recordSlice = createSlice({
   initialState: initialState,
   reducers: {
     setRecord: (state, action) => {
-      state.record = action.payload;
+      state.data = action.payload;
     },
     clearRecord: state => {
-      state.record = null;
+      state.data = null;
     },
   },
 });

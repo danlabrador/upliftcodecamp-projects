@@ -1,12 +1,8 @@
-import { useEffect } from 'react';
 import './App.css';
-import GoogleIdentity from './services/api/GoogleIdentity';
+import { useGoogleSSO } from './hooks/useGoogleSSO';
 
 function App() {
-  useEffect(() => {
-    const googleIdentity = new GoogleIdentity();
-    googleIdentity.renderButton();
-  }, []);
+  useGoogleSSO();
 
   return (
     <>
