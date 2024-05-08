@@ -21,7 +21,7 @@ type GoogleUser = {
   sub: string;
 };
 
-export default class GoogleSSO {
+export default class GoogleIdentity {
   private _googleUser: GoogleUser;
 
   constructor() {
@@ -36,7 +36,7 @@ export default class GoogleSSO {
     this._googleUser = user;
   }
 
-  async renderButton(dispatch: AppDispatch): Promise<void> {
+  async renderButton(dispatch: AppDispatch, setIsLoggedIn: (value: string) => void): Promise<void> {
     /* global google */
     await google.accounts.id.initialize({
       client_id: '744543541785-v89rrt123mnl76h2ek2e3fvbq15erpob.apps.googleusercontent.com',
@@ -53,6 +53,7 @@ export default class GoogleSSO {
         };
 
         dispatch(setUser(user));
+        setIsLoggedIn('true');
       },
     });
 
@@ -64,7 +65,7 @@ export default class GoogleSSO {
       logo_alignment: 'left', // left, center
       locale: 'en',
       // type: 'standard',
-      // width: '300px',
+      width: '320px',
       // state - example: `button 1` - Optional, as multiple Sign in with Google buttons can be rendered on the same page, you can assign each button with a unique string. The same string would return along with the ID token, so you can identify which button user clicked to sign in.
       click_listener: async () => {
         google.accounts.id.prompt();

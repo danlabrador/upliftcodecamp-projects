@@ -8,8 +8,8 @@ export type Course = {
   isAvailable: boolean;
   pointsEarned: number;
   pointsTotal: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   enrolledBy: number; // User ID
   prerequisiteCourses: number[]; // Course IDs
   units: {

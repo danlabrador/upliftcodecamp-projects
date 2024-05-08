@@ -11,8 +11,8 @@ export const courseSol2: Course = {
   isAvailable: true,
   pointsEarned: 81,
   pointsTotal: 230,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  updatedAt: new Date('2024-04-28T11:03:14Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  updatedAt: new Date('2024-04-28T11:03:14Z').toISOString(),
   enrolledBy: 10000000001,
   prerequisiteCourses: [20000000002],
   units: {

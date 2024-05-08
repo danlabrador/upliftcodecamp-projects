@@ -6,12 +6,14 @@ type UserState = {
   data: User | null;
   isLoading: false;
   error: null;
+  isLoggedIn: boolean;
 };
 
 const initialState: UserState = {
   data: null,
   isLoading: false,
   error: null,
+  isLoggedIn: false,
 };
 
 const userSlice = createSlice({
@@ -20,9 +22,11 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.data = action.payload;
+      state.isLoggedIn = true;
     },
     clearUser: state => {
       state.data = null;
+      state.isLoggedIn = false;
     },
   },
 });
