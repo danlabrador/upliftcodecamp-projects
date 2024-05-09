@@ -1,4 +1,3 @@
-import './App.css';
 import { AppDispatch, RootState } from './services/state/store';
 import { Route, Routes } from 'react-router-dom';
 import { setUser } from './services/state/user/userSlice';
@@ -35,6 +34,7 @@ function App() {
   const layout = user.isLoggedIn ? (
     <Route element={<PrivateLayout />}>
       <Route path="/" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Route>
   ) : (
     <Route element={<PublicLayout />}>

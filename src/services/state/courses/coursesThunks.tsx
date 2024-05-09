@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { courseSol2 } from './mockCourses';
+import { courseSol1, courseSol2 } from './mockCourses';
 import { Course } from '../../../models/Course';
 
 // MARK: loadCourses
 export const loadCoursesAsync = createAsyncThunk('courses/loadCourses', async () => {
   //? Simulation: Call API to add course
   await new Promise(resolve => setTimeout(resolve, 1000));
-  return [courseSol2];
+  return [courseSol1, courseSol2];
 });
 
 // MARK: updateCoursePoints

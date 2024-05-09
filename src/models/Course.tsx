@@ -11,6 +11,10 @@ export type Course = {
   createdAt: string;
   updatedAt: string;
   enrolledBy: number; // User ID
+  bannerImage?: {
+    url: string;
+    alt: string;
+  };
   prerequisiteCourses: number[]; // Course IDs
   units: {
     unitsFinished: number;

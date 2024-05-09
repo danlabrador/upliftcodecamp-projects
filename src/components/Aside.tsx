@@ -6,7 +6,7 @@ export const Aside = () => {
   const { progressNum } = useLoadCourses();
   return (
     <>
-      <aside className="flex flex-col justify-end w-[320px]">
+      <aside className="flex flex-col items-end w-[320px]">
         <p className="font-medium mb-2">
           SOL 2: Week <span className="font-bold">4</span> of 6
         </p>
