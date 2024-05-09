@@ -5,10 +5,12 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useSelector } from 'react-redux';
-import Dashboard from './pages/private/Dashboard';
+import DashboardPage from './pages/private/DashboardPage';
 import Login from './pages/public/Login';
 import PrivateLayout from './pages/private/PrivateLayout';
 import PublicLayout from './pages/public/PublicLayout';
+import CoursePage from './pages/private/CoursePage';
+import CoursesPage from './pages/private/CoursesPage';
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,12 +35,18 @@ function App() {
 
   const layout = user.isLoggedIn ? (
     <Route element={<PrivateLayout />}>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/" element={<DashboardPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+      <Route path="/courses" element={<CoursesPage />} />
+      <Route path="/courses/:courseId" element={<CoursePage />} />
+      {/* <Route path="*" element={<NotFoundPage />} /> */}
     </Route>
   ) : (
     <Route element={<PublicLayout />}>
       <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Login />} />
+      <Route path="*" element={<Login />} />
     </Route>
   );
 

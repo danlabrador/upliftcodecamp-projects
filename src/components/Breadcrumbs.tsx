@@ -1,21 +1,33 @@
-import { Link } from 'react-router-dom';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from './ui/breadcrumb';
 
 export type BreadcrumbInfo = {
   text: string;
-  link?: string;
+  to?: string;
 };
+
 export type BreadcrumbsProps = {
   breadcrumbs: BreadcrumbInfo[];
 };
+
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ breadcrumbs }) => {
   return (
-    <nav className="flex items-center">
-      {breadcrumbs.map((breadcrumb, index) => (
-        <span key={index}>
-          {breadcrumb.link ? <Link to={breadcrumb.link}>{breadcrumb.text}</Link> : breadcrumb.text}
-          {index < breadcrumbs.length - 1 && ' / '}
-        </span>
-      ))}
-    </nav>
+    <Breadcrumb>
+      <BreadcrumbList>
+        {breadcrumbs.map(breadcrumb => (
+          <BreadcrumbItem>
+            {breadcrumb.to && <BreadcrumbLink to={breadcrumb.to}>{breadcrumb.text}</BreadcrumbLink>}
+            {!breadcrumb.to && <BreadcrumbPage>{breadcrumb.text}</BreadcrumbPage>}
+            {breadcrumb.to && <BreadcrumbSeparator />}
+          </BreadcrumbItem>
+        ))}
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
