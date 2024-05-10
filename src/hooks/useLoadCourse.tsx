@@ -1,4 +1,4 @@
-import { useLoadCourses } from '@/hooks/useLoadContent';
+import { useLoadCourses } from '@/hooks/useLoadCourses';
 import { RootState } from '@/services/state/store';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -12,6 +12,7 @@ export const useLoadCourse = () => {
       return state.courses.data.find(course => course.id === parseInt(courseId));
     }
   });
+
 
   return { courseId, course };
 };

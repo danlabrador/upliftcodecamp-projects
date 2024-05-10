@@ -8,6 +8,7 @@ export const assessment1: Assessment = {
     'Students are assessed on their understanding of the vision and purpose of the life group.',
   maxScore: 30,
   score: 27,
+  evaluatorsNotes: 'Kindly minimize erasures so we can read your answers better. Great job!',
   location: {
     id: 30000000001,
     title: 'Cinema 6',
@@ -15,10 +16,14 @@ export const assessment1: Assessment = {
   },
   courseId: 20000000002,
   studentId: 10000000001,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  scheduledAt: new Date('2024-04-14T6:00:00Z'),
-  submittedAt: new Date('2024-04-14T8:03:14Z'),
-  updatedAt: new Date('2024-04-14T8:03:14Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  scheduledAt: new Date('2024-04-14T06:00:00Z').toISOString(),
+  submittedAt: new Date('2024-04-14T08:03:14Z').toISOString(),
+  updatedAt: new Date('2024-04-14T08:03:14Z').toISOString(),
+  screenshots: [
+    'https://cdn.discordapp.com/attachments/1019424511378067467/1238479160184406016/sample-sheet-a.jpg?ex=663f6f19&is=663e1d99&hm=b5f92fd1863fcecbef7fc910bbb2d8423d8da56bd840b5f2dd162cb53fbf725d&',
+    'https://cdn.discordapp.com/attachments/1019424511378067467/1238479159894872205/sample-sheet-b.jpg?ex=663f6f19&is=663e1d99&hm=4c5840e7c57659e73a3c1a3f9f7d500776d52f0cbae8d52124e43e714e7da617&'
+  ]
 };
 
 export const assessment2: Assessment = {
@@ -36,10 +41,14 @@ export const assessment2: Assessment = {
   },
   courseId: 20000000002,
   studentId: 10000000001,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  scheduledAt: new Date('2024-04-21T10:00:00Z'),
-  submittedAt: new Date('2024-04-21T12:14:32Z'),
-  updatedAt: new Date('2024-04-21T12:14:32Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  scheduledAt: new Date('2024-04-21T10:00:00Z').toISOString(),
+  submittedAt: new Date('2024-04-21T12:14:32Z').toISOString(),
+  updatedAt: new Date('2024-04-21T12:14:32Z').toISOString(),
+  screenshots: [
+    'https://cdn.discordapp.com/attachments/1019424511378067467/1238479160184406016/sample-sheet-a.jpg?ex=663f6f19&is=663e1d99&hm=b5f92fd1863fcecbef7fc910bbb2d8423d8da56bd840b5f2dd162cb53fbf725d&',
+    'https://cdn.discordapp.com/attachments/1019424511378067467/1238479159894872205/sample-sheet-b.jpg?ex=663f6f19&is=663e1d99&hm=4c5840e7c57659e73a3c1a3f9f7d500776d52f0cbae8d52124e43e714e7da617&'
+  ]
 };
 
 export const assessment3: Assessment = {
@@ -56,10 +65,14 @@ export const assessment3: Assessment = {
   },
   courseId: 20000000002,
   studentId: 10000000001,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  scheduledAt: new Date('2024-04-28T9:00:00Z'),
-  submittedAt: new Date('2024-04-28T11:03:14Z'),
-  updatedAt: new Date('2024-04-28T11:03:14Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  scheduledAt: new Date('2024-04-28T09:00:00Z').toISOString(),
+  submittedAt: new Date('2024-04-28T11:03:14Z').toISOString(),
+  updatedAt: new Date('2024-04-28T11:03:14Z').toISOString(),
+  screenshots: [
+    'https://cdn.discordapp.com/attachments/1019424511378067467/1238479160184406016/sample-sheet-a.jpg?ex=663f6f19&is=663e1d99&hm=b5f92fd1863fcecbef7fc910bbb2d8423d8da56bd840b5f2dd162cb53fbf725d&',
+    'https://cdn.discordapp.com/attachments/1019424511378067467/1238479159894872205/sample-sheet-b.jpg?ex=663f6f19&is=663e1d99&hm=4c5840e7c57659e73a3c1a3f9f7d500776d52f0cbae8d52124e43e714e7da617&'
+  ]
 };
 
 export const assessment4: Assessment = {
@@ -75,9 +88,9 @@ export const assessment4: Assessment = {
   },
   courseId: 20000000002,
   studentId: 10000000001,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  scheduledAt: new Date('2024-05-05T5:45:00Z'),
-  updatedAt: new Date('2024-04-07T05:34:08Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  scheduledAt: new Date('2024-05-05T05:45:00Z').toISOString(),
+  updatedAt: new Date('2024-04-07T05:34:08Z').toISOString(),
 };
 
 export const assessment5: Assessment = {
@@ -93,9 +106,9 @@ export const assessment5: Assessment = {
   },
   courseId: 20000000002,
   studentId: 10000000001,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  scheduledAt: new Date('2024-05-12T7:15:00Z'),
-  updatedAt: new Date('2024-04-07T05:34:08Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  scheduledAt: new Date('2024-05-12T07:15:00Z').toISOString(),
+  updatedAt: new Date('2024-04-07T05:34:08Z').toISOString(),
 };
 
 export const assessment6: Assessment = {
@@ -112,9 +125,9 @@ export const assessment6: Assessment = {
   },
   courseId: 20000000002,
   studentId: 10000000001,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  scheduledAt: new Date('2024-05-19T10:00:00Z'),
-  updatedAt: new Date('2024-04-07T05:34:08Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  scheduledAt: new Date('2024-05-19T10:00:00Z').toISOString(),
+  updatedAt: new Date('2024-04-07T05:34:08Z').toISOString(),
 };
 
 export const assessment7: Assessment = {
@@ -129,7 +142,7 @@ export const assessment7: Assessment = {
   },
   courseId: 20000000002,
   studentId: 10000000001,
-  createdAt: new Date('2024-04-07T05:34:08Z'),
-  scheduledAt: new Date('2024-05-19T10:00:00Z'),
-  updatedAt: new Date('2024-04-07T05:34:08Z'),
+  createdAt: new Date('2024-04-07T05:34:08Z').toISOString(),
+  scheduledAt: new Date('2024-05-19T10:00:00Z').toISOString(),
+  updatedAt: new Date('2024-04-07T05:34:08Z').toISOString(),
 };

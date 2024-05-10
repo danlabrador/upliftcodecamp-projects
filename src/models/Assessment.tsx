@@ -10,10 +10,10 @@ export type Assessment = {
   location: Room;
   courseId: number;
   studentId: number;
-  createdAt: Date;
-  scheduledAt?: Date;
-  submittedAt?: Date;
-  updatedAt: Date;
+  createdAt: string;
+  scheduledAt?: string;
+  submittedAt?: string;
+  updatedAt: string;
   evaluatorsNotes?: string;
   screenshots?: string[]; // URLs
 };

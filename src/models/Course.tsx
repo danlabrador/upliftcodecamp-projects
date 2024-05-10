@@ -10,10 +10,22 @@ export type Course = {
   pointsTotal: number;
   createdAt: string;
   updatedAt: string;
+  startsAt: string;
+  endsAt: string;
   enrolledBy: number; // User ID
-  bannerImage?: {
-    url: string;
-    alt: string;
+  images?: {
+    icon?: {
+      url: string;
+      alt: string;
+    };
+    card?: {
+      url: string;
+      alt: string;
+    };
+    banner?: {
+      url: string;
+      alt: string;
+    };
   };
   prerequisiteCourses: number[]; // Course IDs
   units: {

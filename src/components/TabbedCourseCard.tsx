@@ -21,18 +21,18 @@ export const TabbedCourseCard = ({
 
   return (
     <Link to={`/courses/${id}`}>
-      <Card className="overflow-hidden p-2 space-y-3 hover:border-violet-400 hover:shadow-lg transition-all duration-200 ease-in-out">
+      <Card className="p-2 space-y-3 hover:border-violet-400 hover:shadow-lg transition-all duration-200 ease-in-out">
         <img src={bannerImage.url} alt={bannerImage.alt} />
         <CardHeader className="px-3 py-0">
           <CardTitle className="text-lg">{title}</CardTitle>
         </CardHeader>
-        <CardDescription className="px-3 pt-0 pb-0">
-          <p>{clippedDescription}</p>
-          <div className="mt-4">
-            <p className="font-medium mb-2">{progressNum}% complete</p>
-            <Progress className="w-full h-3 mb-6" value={progressNum} />
-          </div>
+        <CardDescription className="px-3">
+          {clippedDescription}
         </CardDescription>
+        <div className="px-3 pb-3">
+          <p className="font-medium pb-1">{progressNum}% complete</p>
+          <Progress className="w-full h-3" value={progressNum} />
+        </div>
       </Card>
     </Link>
   );

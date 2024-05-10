@@ -18,7 +18,7 @@ export const CoursesTab = ({ isCurrentCourses }: CoursesTab) => {
     id: course.id,
     title: course.title,
     description: course.description,
-    bannerImage: course.bannerImage || { url: '', alt: '' },
+    bannerImage: course.images?.card || { url: '', alt: '' },
     progressNum: Math.floor((course.units.unitsFinished / course.units.unitsTotal) * 100),
   }));
 
@@ -26,8 +26,8 @@ export const CoursesTab = ({ isCurrentCourses }: CoursesTab) => {
 
   return (
     <TabsContent className="w-md-card" value={tabsContentValue}>
-      {courseCards.map((courseCard: CourseCard) => (
-        <TabbedCourseCard {...courseCard} />
+      {courseCards.map((courseCard: CourseCard, idx:number) => (
+        <TabbedCourseCard key={`tabbed-course-card-${idx}`} {...courseCard} />
       ))}
     </TabsContent>
   );

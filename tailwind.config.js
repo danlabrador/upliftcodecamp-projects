@@ -77,7 +77,9 @@ module.exports = {
       },
       spacing: {
         "md-card": "320px",
-      }
+        "course-content-width": "440px",
+        "course-img-height": "280px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
