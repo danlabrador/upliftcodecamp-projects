@@ -21,6 +21,8 @@ type GoogleUser = {
   sub: string;
 };
 
+type SetLocalStorageItem = (value: string) => void;
+
 export default class GoogleIdentity {
   private _googleUser: GoogleUser;
 
@@ -36,7 +38,15 @@ export default class GoogleIdentity {
     this._googleUser = user;
   }
 
-  async renderButton(dispatch: AppDispatch, setIsLoggedIn: (value: string) => void): Promise<void> {
+  async renderButton(
+    dispatch: AppDispatch,
+    setIsLoggedIn: SetLocalStorageItem,
+    setId: SetLocalStorageItem,
+    setEmail: SetLocalStorageItem,
+    setFamilyName: SetLocalStorageItem,
+    setGivenName: SetLocalStorageItem,
+    setPicture: SetLocalStorageItem
+  ): Promise<void> {
     /* global google */
     await google.accounts.id.initialize({
       client_id: '744543541785-v89rrt123mnl76h2ek2e3fvbq15erpob.apps.googleusercontent.com',
@@ -54,6 +64,11 @@ export default class GoogleIdentity {
 
         dispatch(setUser(user));
         setIsLoggedIn('true');
+        setId(user.id.toString());
+        setEmail(user.email);
+        setFamilyName(user.familyName);
+        setGivenName(user.givenName);
+        setPicture(user.picture);
       },
     });
 

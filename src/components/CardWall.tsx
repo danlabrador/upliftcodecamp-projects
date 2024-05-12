@@ -14,8 +14,8 @@ export const CardWall = ({ course }: CardWallProps) => {
 
   return (
     <div className="flex flex-col md:flex-row mb-12 overflow-hidden w-full">
-      <Card className="flex flex-1 flex-col md:flex-row bg-white shadow-lg rounded-lg max-h-[400px] overflow-hidden">
-        <CardContent className="flex flex-col w-full md:w-1/3 p-6 justify-between">
+      <Card className="flex flex-1 flex-col justify-center items-center md:flex-row bg-white shadow-lg rounded-lg overflow-hidden">
+        <CardContent className="flex flex-col w-full h-full md:w-1/2 p-6 justify-between">
           <div className='mb-4'>
             <CardHeader className="px-3 py-0 mb-2 flex flex-row gap-2 items-center">
               <img className='h-10 w-10' src={course?.images?.icon?.url} alt={course?.images?.icon?.alt} />
@@ -38,9 +38,9 @@ export const CardWall = ({ course }: CardWallProps) => {
             <p className="font-medium text-right">{progressNum}% complete</p>
           </div>
         </CardContent>
-        <div className="flex-1 flex items-stretch border-l md:border-l-0 md:border-t border-gray-200 max-h-course-img-height md:max-h-none">
+        <div className="flex-1 flex items-center border-l md:border-l-0 md:border-t border-gray-200 h-full xl:max-h-[350px]">
           <img
-            className="object-cover w-full"
+            className="object-cover w-full h-full"
             src={course?.images?.banner?.url || defaultCourseImage}
             alt={course?.images?.banner?.alt || 'Default course banner image'} />
         </div>

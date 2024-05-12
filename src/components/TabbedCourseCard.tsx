@@ -21,7 +21,7 @@ export const TabbedCourseCard = ({
 
   return (
     <Link to={`/courses/${id}`}>
-      <Card className="p-2 space-y-3 hover:border-violet-400 hover:shadow-lg transition-all duration-200 ease-in-out">
+      <Card className="w-md-card p-2 space-y-3 hover:border-violet-400 hover:shadow-lg transition-all duration-200 ease-in-out">
         <img src={bannerImage.url} alt={bannerImage.alt} />
         <CardHeader className="px-3 py-0">
           <CardTitle className="text-lg">{title}</CardTitle>

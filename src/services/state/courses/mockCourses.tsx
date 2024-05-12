@@ -1,7 +1,14 @@
 import { Course } from '../../../models/Course';
+import sol1Icon from '../../../assets/images/private/sol1-icon.png';
+import sol1Card from '../../../assets/images/private/sol1-card.jpg';
+import sol1Banner from '../../../assets/images/private/sol1-banner.jpg';
+import sol2Icon from '../../../assets/images/private/sol2-icon.png';
+import sol2Card from '../../../assets/images/private/sol2-card.jpg';
+import sol2Banner from '../../../assets/images/private/sol2-banner.jpg';
 
 export const courseSol1: Course = {
   id: 20000000001,
+  abbreviation: 'SOL 1',
   title: 'School of Leaders 1',
   description:
     'The main objective of this level of training is to train the leader in the vision of growth–the cellular vision. In this level, the leader learns the structure and development of a cell, and the process of raising a team of leaders out of a cell group. This training also equips the leader in intercession, evangelism, and service.',
@@ -18,15 +25,15 @@ export const courseSol1: Course = {
   enrolledBy: 10000000001,
   images: {
     icon: {
-      url: 'https://cdn.discordapp.com/attachments/1019424511378067467/1238414061171900418/sol1-icon.png?ex=663f3278&is=663de0f8&hm=a0bfda4571570c263a41872ee2d0a782c4b1477ca9d78f42f6f715bee5faa76c&',
+      url: sol1Icon,
       alt: 'School of Leaders 1',
     },
     card: {
-      url: 'https://cdn.discordapp.com/attachments/1019424511378067467/1238085209266720940/sol1.jpg?ex=663e0034&is=663caeb4&hm=c24411b76a324d0944ac1e0642e24da5decf75e1359f76c85c9145396f02b720&',
+      url: sol1Card,
       alt: 'School of Leaders 1',
     },
     banner: {
-      url: 'https://cdn.discordapp.com/attachments/1019424511378067467/1238111020891902082/cynthia-magana-GMLNhaBkCiE-unsplash.jpg?ex=663ec0fe&is=663d6f7e&hm=219e19439718927f87a50f38a30108b1f338bbb0c2961edd7d31b14e68a50d37&',
+      url: sol1Banner,
       alt: 'School of Leaders 1',
     }
   },
@@ -42,6 +49,7 @@ export const courseSol1: Course = {
 
 export const courseSol2: Course = {
   id: 20000000002,
+  abbreviation: 'SOL 2',
   title: 'School of Leaders 2',
   description:
     'The main objective of this level of training is not to provide a wealth of information, but to form efficient leaders founded on the basics of salvation, prayer, baptism, faith, and the Holy Spirit. The lessons for this level are “…not designed for the students to become theologians, rather for them to have an effective tool to make disciples and to implement the vision.” (Castellanos, 2007)',
@@ -58,15 +66,15 @@ export const courseSol2: Course = {
   enrolledBy: 10000000001,
   images: {
     icon: {
-      url: 'https://cdn.discordapp.com/attachments/1019424511378067467/1238414060928765973/sol2-icon.png?ex=663f3278&is=663de0f8&hm=4c9a864a18a2c3dcc2175b9da71f57af91ec316132146f868a807451e72c7315&',
+      url: sol2Icon,
       alt: 'School of Leaders 2 icon',
     },
     card: {
-      url: 'https://cdn.discordapp.com/attachments/1019424511378067467/1238063802298273913/sol2.jpg?ex=663dec44&is=663c9ac4&hm=1af21e1cfa73c218a16030f560e91064af60dda8f819139f1c24005f79a10fc7&',
+      url: sol2Card,
       alt: 'School of Leaders 2 card image',
     },
     banner: {
-      url: 'https://cdn.discordapp.com/attachments/1019424511378067467/1238110597661331526/matheus-ferrero-TkrRvwxjb_8-unsplash.jpg?ex=663ec099&is=663d6f19&hm=a17e35e2f6529690f9506a2a927ac9c70dff6394b3646b290b22aaab886bdd99&',
+      url: sol2Banner,
       alt: 'School of Leaders 2 banner',
     }
   },

@@ -7,12 +7,17 @@ import { useLocalStorage } from './useLocalStorage';
 export function useGoogleSSO() {
   const dispatch = useDispatch<AppDispatch>();
   const { setItem: setIsLoggedIn } = useLocalStorage('isLoggedIn');
+  const {setItem: setId } = useLocalStorage('id');
+  const {setItem: setEmail } = useLocalStorage('email');
+  const {setItem: setFamilyName } = useLocalStorage('familyName');
+  const {setItem: setGivenName } = useLocalStorage('givenName');
+  const {setItem: setPicture } = useLocalStorage('picture');
 
   const googleSSO = useMemo(() => new GoogleSSO(), []);
 
   useEffect(() => {
-    googleSSO.renderButton(dispatch, setIsLoggedIn);
-  }, [googleSSO, dispatch, setIsLoggedIn]);
+    googleSSO.renderButton(dispatch, setIsLoggedIn, setId, setEmail, setFamilyName, setGivenName, setPicture);
+  }, [googleSSO, dispatch, setIsLoggedIn, setId, setEmail, setFamilyName, setGivenName, setPicture]);
 
   const logout = () => {
     googleSSO.logout();

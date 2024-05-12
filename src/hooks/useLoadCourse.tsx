@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 export const useLoadCourse = () => {
-  useLoadCourses();
+  const { courses } = useLoadCourses();
+  const isCourseLoading = courses.isLoading as boolean;
 
   const { courseId } = useParams<{ courseId: string }>();
   const course = useSelector((state: RootState) => {
@@ -14,5 +15,5 @@ export const useLoadCourse = () => {
   });
 
 
-  return { courseId, course };
+  return { courseId, course, isCourseLoading };
 };
