@@ -2,14 +2,10 @@ import { Link } from 'react-router-dom';
 import Logo from '../assets/images/logo-32.png';
 import { ClipboardList, Home, LogOut } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from './ui/tooltip';
-import { useDispatch } from 'react-redux';
-import { clearUser } from '@/services/state/user/userSlice';
+import { useLogout } from '../hooks/useLogout';
 
 export function Nav() {
-  const dispatch = useDispatch()
-  const handleLogout = () => {
-    dispatch(clearUser())
-  }
+  const { handleLogout } = useLogout();
 
   return (
     <TooltipProvider>

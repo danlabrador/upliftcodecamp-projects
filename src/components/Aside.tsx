@@ -18,7 +18,7 @@ export const Aside = () => {
     <aside className="hidden lg:flex flex-col items-start w-[275px]">
       <Link to='/courses/20000000002'>
         <p className="font-medium mb-2">
-          {activeCourse && activeCourse.abbreviation} : {trueCurrentWeek > totalWeeks ? 'Done' : `Week ${currentWeek} of ${totalWeeks}`}
+          {activeCourse && activeCourse.abbreviation} : {trueCurrentWeek > totalWeeks ? `We are already beyond Week ${totalWeeks}.` : `Week ${currentWeek} of ${totalWeeks}`}
         </p>
       </Link>
       <Progress className="w-full h-3 mb-6" value={progressNum} />

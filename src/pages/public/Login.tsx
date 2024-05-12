@@ -1,42 +1,14 @@
 import { useGoogleSSO } from '@/hooks/useGoogleSSO';
 import { WhiteLogo } from '../../components/WhiteLogo';
 import { LoginFeatureImage } from '../../components/LoginFeatureImage';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useLoginForm } from '@/hooks/useLoginForm';
-import { UseFormRegister } from 'react-hook-form';
+import { LabeledTextInput } from '../../components/LabeledTextInput';
 
-type FormValues = {
+export type FormValues = {
   email: 'dan@upliftcodecamp.com';
   password: 'swordfish';
 };
-
-interface LabeledInputProps {
-  id: string;
-  label: string;
-  type?: 'text' | 'password' | 'email';
-  register?: UseFormRegister<FormValues>;
-  hookFormType?: 'email' | 'password';
-}
-
-const LabeledTextInput: React.FC<LabeledInputProps> = ({
-  id,
-  label,
-  type = 'text',
-  register,
-  hookFormType: hookFormId,
-}) => (
-  <div className="space-y-1">
-    <label htmlFor={id} className="block text-sm font-medium text-gray-700">
-      {label}
-    </label>
-    {register && hookFormId ? (
-      <Input {...register(hookFormId)} id={id} type={type} />
-    ) : (
-      <Input id={id} type={type} />
-    )}
-  </div>
-);
 
 const Login = () => {
   useGoogleSSO();
@@ -47,6 +19,7 @@ const Login = () => {
         <LoginFeatureImage />
         <WhiteLogo />
       </aside>
+      <div className='w-full h-[60px] md:hidden'/>
       <main className="flex justify-center items-center w-full pb-40 md:p-0 lg:p-0 h-svh md:w-1/2">
         <form className="flex flex-col space-y-4 p-8 w-[384px]" onSubmit={handleSubmit(onSubmit)}>
           <h1 className="text-2xl font-extrabold text-center">Log in to Lighthouse</h1>
