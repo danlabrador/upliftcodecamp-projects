@@ -3,7 +3,6 @@ import { Progress } from '@/components/ui/progress';
 import { useCourseDetails } from '@/hooks/useCourseDetails';
 import { useLoadCourses } from '@/hooks/useLoadCourses';
 import { Course } from '@/models/Course';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export const Aside = () => {
@@ -15,15 +14,11 @@ export const Aside = () => {
     currentWeek, totalWeeks, progressNum, trueCurrentWeek
   } = useCourseDetails(activeCourse);
 
-  useEffect(() => {
-    console.log('Active course:', activeCourse);
-  })
-
   return (
     <aside className="hidden lg:flex flex-col items-start w-[275px]">
       <Link to='/courses/20000000002'>
         <p className="font-medium mb-2">
-          {activeCourse.abbreviation}: {trueCurrentWeek > totalWeeks ? 'Done' : `Week ${currentWeek} of ${totalWeeks}`}
+          {activeCourse && activeCourse.abbreviation} : {trueCurrentWeek > totalWeeks ? 'Done' : `Week ${currentWeek} of ${totalWeeks}`}
         </p>
       </Link>
       <Progress className="w-full h-3 mb-6" value={progressNum} />
