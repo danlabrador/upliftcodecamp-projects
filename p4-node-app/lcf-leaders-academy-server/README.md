@@ -100,3 +100,7 @@ This documentation provides an overview of the routes and endpoints available in
 - **Response**:
   - `204 No Content`: Enrollment successfully deleted.
   - `404 Not Found`: Enrollment not found with the provided ID.
+
+## Entity Class Diagram
+
+You can find the entity class diagram for the Leaders Academy API [here](https://lucid.app/lucidchart/2a9fb8ae-cffb-4b60-ab24-f3c6f732e63b/edit?viewport_loc=-2543%2C2286%2C1838%2C992%2C0_0&invitationId=inv_96c16138-6602-4f1b-a3a7-c2acf298c9a0).
