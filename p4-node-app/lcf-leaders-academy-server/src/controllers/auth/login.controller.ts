@@ -10,6 +10,7 @@ import z from "zod";
 export const logInViaGoogleController = asyncHandler(
   async (req: Request, res: Response) => {
     try {
+      console.log(req.body);
       const body = LogInViaGoogleBodySchema.parse(req.body);
       if (!body.user.email) {
         throw new AuthenticationError();

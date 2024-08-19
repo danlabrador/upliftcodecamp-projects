@@ -5,6 +5,9 @@ import { getCurrentCourseOfferings } from "../../data-access/courseOfferings.mon
 export const getCurrentCourseOfferingsController = asyncHandler(
   async (req: Request, res: Response) => {
     const currentCourseOfferings = await getCurrentCourseOfferings();
+    if (!currentCourseOfferings) {
+      res.status(404).json({ message: "No current course offerings found." });
+    }
     res.status(200).json(currentCourseOfferings);
   }
 );

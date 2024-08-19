@@ -2,10 +2,37 @@ import { CourseOfferingModel } from "../models/schemas/courseOffering.schema";
 import { SemesterModel } from "../models/schemas/semester.schema";
 
 export async function getCourseOfferingByID(courseOfferingID: string) {
-  return await CourseOfferingModel.findOne({
-    _id: courseOfferingID,
-    deletedAt: null,
-  });
+  const result = await CourseOfferingModel.aggregate([
+    {
+      $match: {
+        _id: courseOfferingID,
+        deletedAt: null,
+      },
+    },
+    {
+      $lookup: {
+        from: "courses", // The name of the Course collection
+        localField: "courseID",
+        foreignField: "_id",
+        as: "courseDetails",
+        pipeline: [
+          {
+            $match: {
+              deletedAt: null,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$courseDetails",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+  ]);
+
+  return result[0] || null;
 }
 
 export async function getCurrentCourseOfferings() {
@@ -38,6 +65,38 @@ export async function getCurrentCourseOfferings() {
     {
       $replaceRoot: {
         newRoot: "$courseOfferings",
+      },
+    },
+    {
+      $lookup: {
+        from: "courses",
+        localField: "courseID",
+        foreignField: "_id",
+        as: "courseDetails",
+      },
+    },
+    {
+      $unwind: "$courseDetails",
+    },
+    {
+      $lookup: {
+        from: "coursecodes",
+        localField: "courseDetails.courseCodeID",
+        foreignField: "_id",
+        as: "courseCodeDetails",
+      },
+    },
+    {
+      $unwind: "$courseCodeDetails",
+    },
+    {
+      $project: {
+        _id: 1,
+        semesterID: 1,
+        courseID: 1,
+        classSchedules: 1,
+        courseDetails: 1,
+        courseCodeDetails: 1,
       },
     },
   ]);
