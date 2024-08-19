@@ -3,11 +3,10 @@ import { auth } from "@/auth";
 import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 
-export const EnrollBtn = () => {
-  const [session, setSession] = useState<Session | null>(null);
+export default function EnrollBtn({ session }: { session: Session }) {
+  const [localSession, setSession] = useState<Session | null>(null);
   interface ServerSession {
     accessToken: string;
-    // Add other properties if necessary
   }
 
   const [serverSession, setServerSession] = useState<
@@ -16,7 +15,6 @@ export const EnrollBtn = () => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      const session = await auth();
       setSession(session);
       const serverSessionResp = await fetch(
         "http://localhost:3100/api/1.0/auth/login",
@@ -33,14 +31,19 @@ export const EnrollBtn = () => {
       setServerSession(serverSession);
     };
     fetchSession();
-  }, []);
+  }, [session]);
 
   const handleEnroll = async () => {
-    if (!session || !serverSession || !session.user || !serverSession) {
+    if (
+      !localSession ||
+      !serverSession ||
+      !localSession.user ||
+      !serverSession
+    ) {
       return;
     }
     const userResp = await fetch(
-      `http://localhost:3100/api/1.0/users/email/${session.user.email}`,
+      `http://localhost:3100/api/1.0/users/email/${localSession.user.email}`,
       {
         headers: {
           Authorization: `Bearer ${serverSession.accessToken}`,
@@ -79,7 +82,7 @@ export const EnrollBtn = () => {
       Enroll
     </button>
   );
-};
+}
 
 export async function getServerSideProps(ctx: any) {
   const session = await auth(ctx);
