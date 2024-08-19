@@ -1,9 +1,18 @@
+"use client";
 import { auth } from "@/auth";
+import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 
 export const EnrollBtn = () => {
-  const [session, setSession] = useState(null);
-  const [serverSession, setServerSession] = useState(null);
+  const [session, setSession] = useState<Session | null>(null);
+  interface ServerSession {
+    accessToken: string;
+    // Add other properties if necessary
+  }
+
+  const [serverSession, setServerSession] = useState<
+    (ServerSession & { user: any }) | null
+  >(null);
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -27,6 +36,9 @@ export const EnrollBtn = () => {
   }, []);
 
   const handleEnroll = async () => {
+    if (!session || !serverSession || !session.user || !serverSession) {
+      return;
+    }
     const userResp = await fetch(
       `http://localhost:3100/api/1.0/users/email/${session.user.email}`,
       {
@@ -45,7 +57,10 @@ export const EnrollBtn = () => {
             Authorization: `Bearer ${serverSession.accessToken}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ courseOfferingID: id, studentID: user._id }),
+          body: JSON.stringify({
+            courseOfferingID: serverSession.user.id,
+            studentID: user._id,
+          }),
         }
       );
 
