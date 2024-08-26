@@ -88,6 +88,28 @@ export async function getActiveStudentEnrollments(studentID: string) {
         "semester.deletedAt": null,
       },
     },
+    {
+      $lookup: {
+        from: "courses",
+        localField: "courseOffering.courseID",
+        foreignField: "_id",
+        as: "course",
+      },
+    },
+    {
+      $unwind: "$course",
+    },
+    {
+      $lookup: {
+        from: "coursecodes",
+        localField: "course.courseCodeID",
+        foreignField: "_id",
+        as: "courseCode",
+      },
+    },
+    {
+      $unwind: "$courseCode",
+    },
   ]);
 
   return activeEnrollments;

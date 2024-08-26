@@ -3,8 +3,10 @@ import { translateCronExpression } from "@/util/cronParser";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export function CourseOfferings({ session }: { session: any }) {
-  const [courseOfferings, setCourseOfferings] = useState<any[]>([]);
+type Enrollment = any;
+
+export default function Enrollments({ session }: { session: any }) {
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -21,16 +23,30 @@ export function CourseOfferings({ session }: { session: any }) {
         );
         const serverSession = await serverSessionResp.json();
 
-        const courseOfferingsResp = await fetch(
-          "http://localhost:3100/api/1.0/courseOfferings",
+        const userResp = await fetch(
+          `http://localhost:3100/api/1.0/users/email/${serverSession.body.user.email}`,
           {
             headers: {
               Authorization: `Bearer ${serverSession.accessToken}`,
             },
           }
         );
-        const courseOfferings = await courseOfferingsResp.json();
-        setCourseOfferings(courseOfferings);
+        const user = await userResp.json();
+
+        console.log(user);
+
+        const enrollmentsResp = await fetch(
+          `http://localhost:3100/api/1.0/users/${
+            user?._id || "me"
+          }/enrollments`,
+          {
+            headers: {
+              Authorization: `Bearer ${serverSession.accessToken}`,
+            },
+          }
+        );
+        const enrollments = await enrollmentsResp.json();
+        setEnrollments(enrollments);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -49,28 +65,26 @@ export function CourseOfferings({ session }: { session: any }) {
         </tr>
       </thead>
       <tbody>
-        {courseOfferings.map((courseOffering: any) => (
-          <tr>
-            <td>{courseOffering.courseCodeDetails.code}</td>
+        {enrollments.map((enrollment) => (
+          <tr key={enrollment._id}>
+            <td>{enrollment.courseCode.code}</td>
             <td className="text-blue-700 underline">
-              <Link href={"/register/" + courseOffering._id}>
-                {courseOffering.courseDetails.name}
+              <Link href={"/register/" + enrollment.courseOffering._id}>
+                {enrollment.course.name}
               </Link>
             </td>
             <td>
-              {courseOffering.classSchedules.map((cron: string) => {
+              {enrollment.courseOffering.classSchedules.map((cron: string) => {
                 return translateCronExpression(
                   cron.split(" ").slice(0, -2).join(" ")
                 );
               })}
             </td>
-            <td>{courseOffering.courseDetails.description}</td>
-            <td>{courseOffering.courseDetails.credits}</td>
+            <td>{enrollment.course.description}</td>
+            <td>{enrollment.course.credits}</td>
           </tr>
         ))}
       </tbody>
     </table>
   );
 }
-
-export default CourseOfferings;

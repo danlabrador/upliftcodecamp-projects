@@ -1,10 +1,10 @@
-import { auth } from "@/auth";
-import Link from "next/link";
-import { useEffect } from "react";
+// import CourseOfferings from "./CourseOfferings";
+import Enrollments from "./Enrollments";
+import { auth } from "../auth";
 import CourseOfferings from "./CourseOfferings";
-import Enrollments from "./Enrolled";
 
-const RegisterPage = async () => {
+export default function RegisterPage() {
+  const session = auth();
   return (
     <main>
       <section className="flex bg-indigo-950 flex-col items-center">
@@ -17,15 +17,13 @@ const RegisterPage = async () => {
       </section>
       <section className="flex flex-col items-center py-8">
         <h2 className="text-4xl font-bold w-full max-w-[1000px]">Enrolled</h2>
-        <Enrollments />
+        <Enrollments session={session} />
 
         <h2 className="text-4xl font-bold w-full max-w-[1000px]">
           Class Offerings
         </h2>
-        <CourseOfferings />
+        <CourseOfferings session={session} />
       </section>
     </main>
   );
-};
-
-export default RegisterPage;
+}

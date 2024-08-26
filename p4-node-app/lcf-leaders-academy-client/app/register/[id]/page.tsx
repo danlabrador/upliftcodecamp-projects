@@ -1,11 +1,7 @@
 import { auth } from "@/auth";
 import CoursePage from "./CoursePage";
 
-export default async function ServerComponent({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
+const Page = async ({ params: { id } }: { params: { id: string } }) => {
   const session = (await auth()) as { user: { email: string } };
   const serverSessionResp = await fetch(
     "http://localhost:3100/api/1.0/auth/login",
@@ -31,4 +27,6 @@ export default async function ServerComponent({
   const course = await courseResp.json();
 
   return <CoursePage course={course} />;
-}
+};
+
+export default Page;

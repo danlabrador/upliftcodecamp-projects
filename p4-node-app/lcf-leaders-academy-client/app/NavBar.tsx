@@ -1,5 +1,3 @@
-"use client";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { auth } from "@/auth";
 
@@ -20,7 +18,11 @@ export const NavBar = async () => {
             <Link href="/api/auth/signout">Log Out</Link>
           </li>
         )}
-        {!session && <Link href="/api/auth/signin">Log In</Link>}
+        {!session && (
+          <li>
+            <Link href="/api/auth/signin">Log In</Link>
+          </li>
+        )}
       </ul>
     </nav>
   );

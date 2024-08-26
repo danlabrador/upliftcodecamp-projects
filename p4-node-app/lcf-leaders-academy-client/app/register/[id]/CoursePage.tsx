@@ -1,10 +1,12 @@
-import { EnrollBtn } from "./EnrollBtn";
+import { auth } from "@/auth";
+import EnrollBtn from "./EnrollBtn";
 
 interface CoursePageProps {
   course: any;
 }
 
 const CoursePage = ({ course }: CoursePageProps) => {
+  const session = auth();
   return (
     <main>
       <section className="flex bg-indigo-950 flex-col items-center">
@@ -34,7 +36,7 @@ const CoursePage = ({ course }: CoursePageProps) => {
           Price: ₱<span className="font-normal">{course.price}</span>
         </p>
 
-        <EnrollBtn />
+        <EnrollBtn session={session} id={course._id} />
       </section>
     </main>
   );
