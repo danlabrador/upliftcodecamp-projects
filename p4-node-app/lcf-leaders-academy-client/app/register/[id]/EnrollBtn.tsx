@@ -1,6 +1,6 @@
 "use client";
 import { auth } from "@/auth";
-import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function EnrollBtn({
@@ -10,55 +10,33 @@ export default function EnrollBtn({
   session: any;
   id: string;
 }) {
-  const [localSession, setLocalSession] = useState<any>(null);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const serverSessionResp = await fetch(
-          "http://localhost:3100/api/1.0/auth/login",
-          {
-            body: session.value,
-            headers: {
-              "Content-Type": "application/json",
-            },
-            method: "POST",
-          }
-        );
-        const serverSession = await serverSessionResp.json();
-        setLocalSession(serverSession);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    })();
-  }, [session]);
+  const router = useRouter();
 
   const handleEnroll = async () => {
     if (
-      !localSession ||
-      !localSession.accessToken ||
-      !localSession.body ||
-      !localSession.body.user
+      !session ||
+      !session.accessToken ||
+      !session.body ||
+      !session.body.user
     ) {
       return;
     }
     const userResp = await fetch(
-      `http://localhost:3100/api/1.0/users/email/${localSession.body.user.email}`,
+      `http://localhost:3100/api/1.0/users/email/${session.body.user.email}`,
       {
         headers: {
-          Authorization: `Bearer ${localSession.accessToken}`,
+          Authorization: `Bearer ${session.accessToken}`,
         },
       }
     );
     const user = await userResp.json();
-    console.log(id);
     try {
       const enrollResp = await fetch(
         "http://localhost:3100/api/1.0/enrollments",
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${localSession.accessToken}`,
+            Authorization: `Bearer ${session.accessToken}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
@@ -70,8 +48,7 @@ export default function EnrollBtn({
       if (!enrollResp.ok) {
         throw new Error("Failed to enroll");
       }
-      const enrollData = await enrollResp.json();
-      console.log("Enrollment successful:", enrollData);
+      router.push(`/register/`);
     } catch (error) {
       console.error("Error enrolling:", error);
     }

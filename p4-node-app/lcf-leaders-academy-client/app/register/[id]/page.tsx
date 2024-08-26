@@ -9,24 +9,15 @@ const Page = async ({ params: { id } }: { params: { id: string } }) => {
       body: JSON.stringify(session),
       headers: {
         "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
       },
       method: "POST",
       next: { revalidate: 20 },
     }
   );
   const serverSession = await serverSessionResp.json();
-  const courseResp = await fetch(
-    "http://localhost:3100/api/1.0/courseOfferings/" + id,
-    {
-      headers: {
-        Authorization: `Bearer ${serverSession.accessToken}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const course = await courseResp.json();
 
-  return <CoursePage course={course} />;
+  return <CoursePage session={serverSession} id={id} />;
 };
 
 export default Page;

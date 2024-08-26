@@ -33,8 +33,6 @@ export default function Enrollments({ session }: { session: any }) {
         );
         const user = await userResp.json();
 
-        console.log(user);
-
         const enrollmentsResp = await fetch(
           `http://localhost:3100/api/1.0/users/${
             user?._id || "me"
